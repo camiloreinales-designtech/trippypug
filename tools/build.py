@@ -13,13 +13,15 @@ def figure(n, p):
     body = f'Hi! I\'m interested in "{p["title"]}" ({detail}). Is it available?'
     mail = f'mailto:{MAIL}?subject={q("I want to buy: " + p["title"])}&amp;body={q(body)}'
     price = f'<span class="d">{"SOLD" if p.get("sold") else html.escape(p["price"], quote=True)}</span>' if p.get("price") or p.get("sold") else ""
+    dot = '<i class="dot" aria-hidden="true"></i>' if p.get("sold") else ""
+    buy = "" if p.get("sold") else f'<a class="buy" href="{mail}" aria-label="I want to buy {html.escape(p["title"], quote=True)}">i want<br>to buy<br>it</a>'
     lazy = "" if n < 2 else ' loading="lazy"'
     t = html.escape(p["title"], quote=False)
     return f'''<figure id="p{n + 1}">
-  <a href="images/full/p{num}.jpg" aria-label="View {html.escape(p["title"], quote=True)} full size"><img src="images/p{num}.jpg" width="{p["w"]}" height="{p["h"]}" alt="{html.escape(p["alt"], quote=True)}"{lazy} decoding="async"></a>
+  <a href="images/full/p{num}.jpg" aria-label="View {html.escape(p["title"], quote=True)} full size"><img src="images/p{num}.jpg" width="{p["w"]}" height="{p["h"]}" alt="{html.escape(p["alt"], quote=True)}"{lazy} decoding="async">{dot}</a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>{t}</b> {p["year"]}</span><span>{html.escape(p["medium"], quote=False)}</span><span class="d">{html.escape(p["dimensions"], quote=True)}</span>{price}</div>
-    <a class="buy" href="{mail}" aria-label="I want to buy {html.escape(p["title"], quote=True)}">i want<br>to buy<br>it</a>
+    {buy}
   </figcaption>
 </figure>'''
 

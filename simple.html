@@ -20,7 +20,8 @@ header .n { font-weight: 700; letter-spacing: .04em; }
 h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 64px 40px; padding-block: 36px 60px; list-style: none; margin: 0; }
 figure { margin: 0; min-width: 0; }
-figure > a, figure > img { display: block; }
+figure > a, figure > img { display: block; position: relative; }
+.dot { position: absolute; right: 6px; bottom: -11px; width: 7px; height: 7px; border-radius: 50%; background: #d62828; }
 figure img { width: 100%; height: auto; display: block; background: #eee; }
 figcaption { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-top: 14px; }
 .lab { display: flex; flex-direction: column; font-size: 14px; line-height: 1.45; min-width: 0; }
@@ -42,10 +43,10 @@ footer b { color: var(--ink); user-select: all; }
 </section>
 <section id="works" aria-label="Paintings"><div class="grid">
 <figure id="p1">
-  <a href="images/full/p26.jpg" aria-label="View Vacas en central park full size"><img src="images/p26.jpg" width="760" height="574" alt="A giant skeleton cow stands among Manhattan skyscrapers at dusk above Central Park&#x27;s green hills and pond, while two small skeletons sit by the water at the lower right." decoding="async"></a>
+  <a href="images/full/p26.jpg" aria-label="View Vacas en central park full size"><img src="images/p26.jpg" width="760" height="574" alt="A giant skeleton cow stands among Manhattan skyscrapers at dusk above Central Park&#x27;s green hills and pond, while two small skeletons sit by the water at the lower right." decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>Vacas en central park</b> 2021</span><span>Acrylic on canvas</span><span class="d">30&quot; × 26&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20Vacas%20en%20central%20park&amp;body=Hi%21%20I%27m%20interested%20in%20%22Vacas%20en%20central%20park%22%20%282021%2C%20Acrylic%20on%20canvas%2C%2030%22%20%C3%97%2026%22%29.%20Is%20it%20available%3F" aria-label="I want to buy Vacas en central park">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p2">
@@ -56,66 +57,66 @@ footer b { color: var(--ink); user-select: all; }
   </figcaption>
 </figure>
 <figure id="p3">
-  <a href="images/full/p08.jpg" aria-label="View La Patrona de Brooklyn full size"><img src="images/p08.jpg" width="588" height="760" alt="A blond-haired woman with gold jewelry sits wrapped in a checkered shawl in a bar draped with a Puerto Rican flag, with green figures behind her." loading="lazy" decoding="async"></a>
+  <a href="images/full/p08.jpg" aria-label="View La Patrona de Brooklyn full size"><img src="images/p08.jpg" width="588" height="760" alt="A blond-haired woman with gold jewelry sits wrapped in a checkered shawl in a bar draped with a Puerto Rican flag, with green figures behind her." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>La Patrona de Brooklyn</b> 2022</span><span>Acrylic on canvas</span><span class="d">28&quot; × 23&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20La%20Patrona%20de%20Brooklyn&amp;body=Hi%21%20I%27m%20interested%20in%20%22La%20Patrona%20de%20Brooklyn%22%20%282022%2C%20Acrylic%20on%20canvas%2C%2028%22%20%C3%97%2023%22%29.%20Is%20it%20available%3F" aria-label="I want to buy La Patrona de Brooklyn">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p4">
-  <a href="images/full/p14.jpg" aria-label="View Dragonrider full size"><img src="images/p14.jpg" width="760" height="570" alt="A skeleton in a dark jacket does a handstand beside a large horned skeleton beast, against a red panel marked 424, blue walls and an orange floor." loading="lazy" decoding="async"></a>
+  <a href="images/full/p14.jpg" aria-label="View Dragonrider full size"><img src="images/p14.jpg" width="760" height="570" alt="A skeleton in a dark jacket does a handstand beside a large horned skeleton beast, against a red panel marked 424, blue walls and an orange floor." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>Dragonrider</b> 2022</span><span>Acrylic on canvas</span><span class="d">30&quot; × 26&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20Dragonrider&amp;body=Hi%21%20I%27m%20interested%20in%20%22Dragonrider%22%20%282022%2C%20Acrylic%20on%20canvas%2C%2030%22%20%C3%97%2026%22%29.%20Is%20it%20available%3F" aria-label="I want to buy Dragonrider">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p5">
-  <a href="images/full/p24.jpg" aria-label="View la perdición full size"><img src="images/p24.jpg" width="554" height="760" alt="A crowd of skeletons gathers on an orange and red floor beneath a swirling turquoise sky, with a skeleton inside a glowing yellow sun, winged skeletons flying, and stacked skulls on both sides." loading="lazy" decoding="async"></a>
+  <a href="images/full/p24.jpg" aria-label="View la perdición full size"><img src="images/p24.jpg" width="554" height="760" alt="A crowd of skeletons gathers on an orange and red floor beneath a swirling turquoise sky, with a skeleton inside a glowing yellow sun, winged skeletons flying, and stacked skulls on both sides." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>la perdición</b> 2022</span><span>Acrylic on canvas</span><span class="d">40&quot; × 30&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20la%20perdici%C3%B3n&amp;body=Hi%21%20I%27m%20interested%20in%20%22la%20perdici%C3%B3n%22%20%282022%2C%20Acrylic%20on%20canvas%2C%2040%22%20%C3%97%2030%22%29.%20Is%20it%20available%3F" aria-label="I want to buy la perdición">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p6">
-  <a href="images/full/p25.jpg" aria-label="View next week is the fries full size"><img src="images/p25.jpg" width="566" height="760" alt="A figure in a red hood, grey bomber jacket, patterned jeans and black boots walks across a bright green tiled floor past a red table stacked with burger boxes, under a cloudy turquoise sky and a rope-netted dome." loading="lazy" decoding="async"></a>
+  <a href="images/full/p25.jpg" aria-label="View next week is the fries full size"><img src="images/p25.jpg" width="566" height="760" alt="A figure in a red hood, grey bomber jacket, patterned jeans and black boots walks across a bright green tiled floor past a red table stacked with burger boxes, under a cloudy turquoise sky and a rope-netted dome." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>next week is the fries</b> 2022</span><span>Acrylic on canvas</span><span class="d">30&quot; × 26&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20next%20week%20is%20the%20fries&amp;body=Hi%21%20I%27m%20interested%20in%20%22next%20week%20is%20the%20fries%22%20%282022%2C%20Acrylic%20on%20canvas%2C%2030%22%20%C3%97%2026%22%29.%20Is%20it%20available%3F" aria-label="I want to buy next week is the fries">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p7">
-  <a href="images/full/p01.jpg" aria-label="View Las Verandas de Brooklyn full size"><img src="images/p01.jpg" width="588" height="760" alt="A skeleton lies on a white-sheeted bed in a dark room. Light from an open shuttered window falls across the floor, and sunflowers wind along the skeleton." loading="lazy" decoding="async"></a>
+  <a href="images/full/p01.jpg" aria-label="View Las Verandas de Brooklyn full size"><img src="images/p01.jpg" width="588" height="760" alt="A skeleton lies on a white-sheeted bed in a dark room. Light from an open shuttered window falls across the floor, and sunflowers wind along the skeleton." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>Las Verandas de Brooklyn</b> 2023</span><span>Acrylic on canvas</span><span class="d">36&quot; × 28&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20Las%20Verandas%20de%20Brooklyn&amp;body=Hi%21%20I%27m%20interested%20in%20%22Las%20Verandas%20de%20Brooklyn%22%20%282023%2C%20Acrylic%20on%20canvas%2C%2036%22%20%C3%97%2028%22%29.%20Is%20it%20available%3F" aria-label="I want to buy Las Verandas de Brooklyn">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p8">
-  <a href="images/full/p05.jpg" aria-label="View Atardecer con una Diosa full size"><img src="images/p05.jpg" width="760" height="507" alt="A giant green eye hangs over a sparkling sea. A blue bull-headed figure in a robe sits at a red-and-white checkered picnic with bones." loading="lazy" decoding="async"></a>
+  <a href="images/full/p05.jpg" aria-label="View Atardecer con una Diosa full size"><img src="images/p05.jpg" width="760" height="507" alt="A giant green eye hangs over a sparkling sea. A blue bull-headed figure in a robe sits at a red-and-white checkered picnic with bones." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>Atardecer con una Diosa</b> 2023</span><span>Acrylic on canvas</span><span class="d">24&quot; × 36&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20Atardecer%20con%20una%20Diosa&amp;body=Hi%21%20I%27m%20interested%20in%20%22Atardecer%20con%20una%20Diosa%22%20%282023%2C%20Acrylic%20on%20canvas%2C%2024%22%20%C3%97%2036%22%29.%20Is%20it%20available%3F" aria-label="I want to buy Atardecer con una Diosa">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p9">
-  <a href="images/full/p07.jpg" aria-label="View Ballet en el Amazonas full size"><img src="images/p07.jpg" width="760" height="503" alt="A troupe of skeletons in dark red tutus and red ballet shoes dance on a black-and-white checkered floor framed by sunflowers and vines." loading="lazy" decoding="async"></a>
+  <a href="images/full/p07.jpg" aria-label="View Ballet en el Amazonas full size"><img src="images/p07.jpg" width="760" height="503" alt="A troupe of skeletons in dark red tutus and red ballet shoes dance on a black-and-white checkered floor framed by sunflowers and vines." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>Ballet en el Amazonas</b> 2023</span><span>Acrylic on canvas</span><span class="d">24&quot; × 36&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20Ballet%20en%20el%20Amazonas&amp;body=Hi%21%20I%27m%20interested%20in%20%22Ballet%20en%20el%20Amazonas%22%20%282023%2C%20Acrylic%20on%20canvas%2C%2024%22%20%C3%97%2036%22%29.%20Is%20it%20available%3F" aria-label="I want to buy Ballet en el Amazonas">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p10">
-  <a href="images/full/p11.jpg" aria-label="View Anti-Auto Retrato en Cartagena full size"><img src="images/p11.jpg" width="587" height="760" alt="A large green skull and skeleton in front of colonial yellow and orange buildings and a clock tower, with small skeletons at tables." loading="lazy" decoding="async"></a>
+  <a href="images/full/p11.jpg" aria-label="View Anti-Auto Retrato en Cartagena full size"><img src="images/p11.jpg" width="587" height="760" alt="A large green skull and skeleton in front of colonial yellow and orange buildings and a clock tower, with small skeletons at tables." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>Anti-Auto Retrato en Cartagena</b> 2023</span><span>Acrylic on canvas</span><span class="d">24&quot; × 36&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20Anti-Auto%20Retrato%20en%20Cartagena&amp;body=Hi%21%20I%27m%20interested%20in%20%22Anti-Auto%20Retrato%20en%20Cartagena%22%20%282023%2C%20Acrylic%20on%20canvas%2C%2024%22%20%C3%97%2036%22%29.%20Is%20it%20available%3F" aria-label="I want to buy Anti-Auto Retrato en Cartagena">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p11">
-  <a href="images/full/p02.jpg" aria-label="View La Madona del’ Carmen full size"><img src="images/p02.jpg" width="588" height="760" alt="A haloed woman in a blue cloak holds a small yellow skeleton child. A church clock tower rises behind them against a blue sky." loading="lazy" decoding="async"></a>
+  <a href="images/full/p02.jpg" aria-label="View La Madona del’ Carmen full size"><img src="images/p02.jpg" width="588" height="760" alt="A haloed woman in a blue cloak holds a small yellow skeleton child. A church clock tower rises behind them against a blue sky." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>La Madona del’ Carmen</b> 2024</span><span>Acrylic on canvas</span><span class="d">30&quot; × 24&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20La%20Madona%20del%E2%80%99%20Carmen&amp;body=Hi%21%20I%27m%20interested%20in%20%22La%20Madona%20del%E2%80%99%20Carmen%22%20%282024%2C%20Acrylic%20on%20canvas%2C%2030%22%20%C3%97%2024%22%29.%20Is%20it%20available%3F" aria-label="I want to buy La Madona del’ Carmen">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p12">
@@ -133,10 +134,10 @@ footer b { color: var(--ink); user-select: all; }
   </figcaption>
 </figure>
 <figure id="p14">
-  <a href="images/full/p09.jpg" aria-label="View La Reina de Williasmburg full size"><img src="images/p09.jpg" width="589" height="760" alt="A woman with curly blond hair and bright rings wears a Puerto Rican flag cape in front of a stylized city skyline and bridge." loading="lazy" decoding="async"></a>
+  <a href="images/full/p09.jpg" aria-label="View La Reina de Williasmburg full size"><img src="images/p09.jpg" width="589" height="760" alt="A woman with curly blond hair and bright rings wears a Puerto Rican flag cape in front of a stylized city skyline and bridge." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>La Reina de Williasmburg</b> 2024</span><span>Acrylic on canvas</span><span class="d">40&quot; × 30&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20La%20Reina%20de%20Williasmburg&amp;body=Hi%21%20I%27m%20interested%20in%20%22La%20Reina%20de%20Williasmburg%22%20%282024%2C%20Acrylic%20on%20canvas%2C%2040%22%20%C3%97%2030%22%29.%20Is%20it%20available%3F" aria-label="I want to buy La Reina de Williasmburg">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p15">
@@ -147,24 +148,24 @@ footer b { color: var(--ink); user-select: all; }
   </figcaption>
 </figure>
 <figure id="p16">
-  <a href="images/full/p18.jpg" aria-label="View pensando en la penumbra full size"><img src="images/p18.jpg" width="760" height="574" alt="Two black skeletons sit with their backs to us in front of two tall barred windows, looking out at a blue sky fading to an orange sunset, with white light streaks across a dark grey wall." loading="lazy" decoding="async"></a>
+  <a href="images/full/p18.jpg" aria-label="View pensando en la penumbra full size"><img src="images/p18.jpg" width="760" height="574" alt="Two black skeletons sit with their backs to us in front of two tall barred windows, looking out at a blue sky fading to an orange sunset, with white light streaks across a dark grey wall." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>pensando en la penumbra</b> 2024</span><span>Acrylic on canvas</span><span class="d">40&quot; × 30&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20pensando%20en%20la%20penumbra&amp;body=Hi%21%20I%27m%20interested%20in%20%22pensando%20en%20la%20penumbra%22%20%282024%2C%20Acrylic%20on%20canvas%2C%2040%22%20%C3%97%2030%22%29.%20Is%20it%20available%3F" aria-label="I want to buy pensando en la penumbra">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p17">
-  <a href="images/full/p23.jpg" aria-label="View Data full size"><img src="images/p23.jpg" width="760" height="486" alt="A skull with a pink bob haircut and wide staring eyes, wired up with bundles of colorful cables that arc across a dark grey and blue background." loading="lazy" decoding="async"></a>
+  <a href="images/full/p23.jpg" aria-label="View Data full size"><img src="images/p23.jpg" width="760" height="486" alt="A skull with a pink bob haircut and wide staring eyes, wired up with bundles of colorful cables that arc across a dark grey and blue background." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>Data</b> 2024</span><span>Acrylic on canvas</span><span class="d">36&quot; × 24&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20Data&amp;body=Hi%21%20I%27m%20interested%20in%20%22Data%22%20%282024%2C%20Acrylic%20on%20canvas%2C%2036%22%20%C3%97%2024%22%29.%20Is%20it%20available%3F" aria-label="I want to buy Data">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p18">
-  <a href="images/full/p27.jpg" aria-label="View el show de angelo colina full size"><img src="images/p27.jpg" width="728" height="760" alt="A standing skeleton holds a microphone on a stand like a stand-up comedian in front of a bright green wall, facing three giant skulls in the foreground over a black and white checkered floor." loading="lazy" decoding="async"></a>
+  <a href="images/full/p27.jpg" aria-label="View el show de angelo colina full size"><img src="images/p27.jpg" width="728" height="760" alt="A standing skeleton holds a microphone on a stand like a stand-up comedian in front of a bright green wall, facing three giant skulls in the foreground over a black and white checkered floor." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>el show de angelo colina</b> 2024</span><span>Acrylic on canvas</span><span class="d">40&quot; × 40&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20el%20show%20de%20angelo%20colina&amp;body=Hi%21%20I%27m%20interested%20in%20%22el%20show%20de%20angelo%20colina%22%20%282024%2C%20Acrylic%20on%20canvas%2C%2040%22%20%C3%97%2040%22%29.%20Is%20it%20available%3F" aria-label="I want to buy el show de angelo colina">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p19">
@@ -203,10 +204,10 @@ footer b { color: var(--ink); user-select: all; }
   </figcaption>
 </figure>
 <figure id="p24">
-  <a href="images/full/p21.jpg" aria-label="View Love club full size"><img src="images/p21.jpg" width="760" height="496" alt="A winged skeleton horse flies above a red and white striped wall, with green vines hanging from a yellow band, a grinning mouth with watching eyes in the middle, and a field of pink and yellow flowers below." loading="lazy" decoding="async"></a>
+  <a href="images/full/p21.jpg" aria-label="View Love club full size"><img src="images/p21.jpg" width="760" height="496" alt="A winged skeleton horse flies above a red and white striped wall, with green vines hanging from a yellow band, a grinning mouth with watching eyes in the middle, and a field of pink and yellow flowers below." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>Love club</b> 2025</span><span>Acrylic on canvas</span><span class="d">40&quot; × 26&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20Love%20club&amp;body=Hi%21%20I%27m%20interested%20in%20%22Love%20club%22%20%282025%2C%20Acrylic%20on%20canvas%2C%2040%22%20%C3%97%2026%22%29.%20Is%20it%20available%3F" aria-label="I want to buy Love club">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p25">
@@ -217,10 +218,10 @@ footer b { color: var(--ink); user-select: all; }
   </figcaption>
 </figure>
 <figure id="p26">
-  <a href="images/full/p12.jpg" aria-label="View Omerta full size"><img src="images/p12.jpg" width="760" height="502" alt="Two skeletons in 1940s-style gangster clothes, one in a white fedora, tan overcoat and red tie, the other in sunglasses and a red fur-trimmed coat, stand on a Brooklyn street in front of a red brick building under a stormy grey sky." loading="lazy" decoding="async"></a>
+  <a href="images/full/p12.jpg" aria-label="View Omerta full size"><img src="images/p12.jpg" width="760" height="502" alt="Two skeletons in 1940s-style gangster clothes, one in a white fedora, tan overcoat and red tie, the other in sunglasses and a red fur-trimmed coat, stand on a Brooklyn street in front of a red brick building under a stormy grey sky." loading="lazy" decoding="async"><i class="dot" aria-hidden="true"></i></a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>Omerta</b> 2026</span><span>Acrylic on canvas</span><span class="d">40&quot; × 26&quot;</span><span class="d">SOLD</span></div>
-    <a class="buy" href="mailto:trippypuginfo@gmail.com?subject=I%20want%20to%20buy%3A%20Omerta&amp;body=Hi%21%20I%27m%20interested%20in%20%22Omerta%22%20%282026%2C%20Acrylic%20on%20canvas%2C%2040%22%20%C3%97%2026%22%29.%20Is%20it%20available%3F" aria-label="I want to buy Omerta">i want<br>to buy<br>it</a>
+    
   </figcaption>
 </figure>
 <figure id="p27">
