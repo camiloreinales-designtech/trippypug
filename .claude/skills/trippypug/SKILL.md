@@ -21,6 +21,7 @@ Keep token use low: do not re-explain the project, do not read big files whole.
 
 ## 3. Common jobs
 - Add painting: `python3 tools/add_painting.py <photo> --title ... --year ... --size "36\" × 28\"" --alt "..." [--medium ...] [--price ...]`.
+- Payment link / sold: set `"pay": "https://..."` or `"sold": true` on the painting in `paintings.json`, then rebuild (see NOTES.md).
 - Edit label/price: edit `paintings.json`, then `python3 tools/build.py`.
 - Gallery behaviour or look: edit `tools/gallery.template.html` with targeted greps and small edits, then rebuild.
 - Always rebuild after any change; confirm `index.html` changed.

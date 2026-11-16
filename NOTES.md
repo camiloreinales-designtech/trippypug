@@ -13,3 +13,9 @@
 - Edit a label or price: change it in `paintings.json`, run `python3 tools/build.py`, commit, push.
 - 3D page: tap/click the floor to walk (RuneScape-style yellow X), drag to look, tap a painting to approach it, walk to the black door for the next room (12 paintings per room). `simple.html` is the no-JavaScript version.
 - Hosted free by GitHub Pages at gallery.trippypug.com; pushing to `main` republishes in about a minute. Only the repo owner can push.
+
+
+## Selling: payment links and "sold"
+- In `paintings.json`, add `"pay": "https://..."` to a painting (a PayPal / Stripe / other payment link, https only). The buy box then shows a **pay securely online** button next to email and Instagram.
+- Add `"sold": true` to mark a painting sold: its label shows SOLD and the buy circle disappears.
+- After editing, run `python3 tools/build.py`, commit, and push.

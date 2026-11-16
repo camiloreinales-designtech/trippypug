@@ -12,7 +12,7 @@ def figure(n, p):
     detail = f'{p["year"]}, {p["medium"]}, {p["dimensions"]}'
     body = f'Hi! I\'m interested in "{p["title"]}" ({detail}). Is it available?'
     mail = f'mailto:{MAIL}?subject={q("I want to buy: " + p["title"])}&amp;body={q(body)}'
-    price = f'<span class="d">{html.escape(p["price"], quote=True)}</span>' if p.get("price") else ""
+    price = f'<span class="d">{"SOLD" if p.get("sold") else html.escape(p["price"], quote=True)}</span>' if p.get("price") or p.get("sold") else ""
     lazy = "" if n < 2 else ' loading="lazy"'
     t = html.escape(p["title"], quote=False)
     return f'''<figure id="p{n + 1}">
@@ -27,7 +27,7 @@ simple = rd("tools/simple.template.html").replace("<!--FIGURES-->", "\n".join(fi
 open(os.path.join(ROOT, "simple.html"), "w", encoding="utf-8").write(simple)
 
 docs = [dict(id=p["id"], assetId="", url=f'images/full/{p["id"]}.jpg', w=p["w"], h=p["h"], ts=n + 1, artist="trippypug",
-             title=p["title"], year=p["year"], medium=p["medium"], dimensions=p["dimensions"], price=p.get("price", ""), origin="")
+             title=p["title"], year=p["year"], medium=p["medium"], dimensions=p["dimensions"], price=p.get("price", ""), pay=p.get("pay", ""), sold=bool(p.get("sold")), origin="")
         for n, p in enumerate(P)]
 stub = ("<script>window.claude={use:async n=>n==='db'?{collection:()=>({orderBy:()=>({onSnapshot:cb=>setTimeout(()=>cb({docs:"
         + json.dumps(docs, ensure_ascii=False).replace("</", "<\\/") + ".map(d=>({id:d.id,data:()=>d}))}),0)})})}:null};</script>")
