@@ -204,7 +204,8 @@
     "price": "",
     "alt": "Two black skeletons sit with their backs to us in front of two tall barred windows, looking out at a blue sky fading to an orange sunset, with white light streaks across a dark grey wall.",
     "w": 760,
-    "h": 574
+    "h": 574,
+    "sold": true
   },
   {
     "id": "p19",
