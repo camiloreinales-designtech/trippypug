@@ -24,7 +24,7 @@ def save(max_side, out, q):
     c = im.copy(); c.thumbnail((max_side, max_side), Image.LANCZOS)
     os.makedirs(os.path.dirname(out), exist_ok=True); c.save(out, "JPEG", quality=q, optimize=True, progressive=True); return c.size
 w, h = save(760, os.path.join(ROOT, "images", nid + ".jpg"), 82)
-save(1800, os.path.join(ROOT, "images", "full", nid + ".jpg"), 85)
+save(3000, os.path.join(ROOT, "images", "full", nid + ".jpg"), 92)
 P.append(dict(id=nid, title=a.title, year=str(a.year), medium=a.medium, dimensions=a.size, price=a.price, alt=a.alt, w=w, h=h))
 json.dump(P, open(path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
 subprocess.check_call([sys.executable, os.path.join(ROOT, "tools", "build.py")])
