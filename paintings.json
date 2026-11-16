@@ -8,7 +8,8 @@
     "price": "",
     "alt": "A giant skeleton cow stands among Manhattan skyscrapers at dusk above Central Park's green hills and pond, while two small skeletons sit by the water at the lower right.",
     "w": 760,
-    "h": 574
+    "h": 574,
+    "sold": true
   },
   {
     "id": "p06",
@@ -205,7 +206,8 @@
     "price": "",
     "alt": "A standing skeleton holds a microphone on a stand like a stand-up comedian in front of a bright green wall, facing three giant skulls in the foreground over a black and white checkered floor.",
     "w": 728,
-    "h": 760
+    "h": 760,
+    "sold": true
   },
   {
     "id": "p13",
