@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Trippy Pug — paintings by trippypug. Walk the gallery."></head><body style="margin:0"><title>Trippy Pug</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="description" content="Trippy Pug — paintings by trippypug. Walk the gallery."></head><body style="margin:0"><title>Trippy Pug</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 :root {
@@ -163,7 +163,7 @@ html, body { height: 100%; }
   renderer.outputEncoding = THREE.sRGBEncoding;
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xeeeeec);
-  const camera = new THREE.PerspectiveCamera(62, 1, 0.05, 40);
+  const camera = new THREE.PerspectiveCamera(62, 1, 0.05, 40); let baseFov = 62, zoom = 1;
   camera.rotation.order = "YXZ";
   const W = 13, L = 13, HGT = 4, PER_ROOM = 12, IN = 0.0254, EYE = 1.6, ART_CY = 1.45;   // metres
   let roomIdx = 0, roomCount = 1, lastSwitch = 0;
@@ -175,7 +175,7 @@ html, body { height: 100%; }
   const view = { x: 0, z: 0, yaw: 0, pitch: -0.02 };
   function resize() {
     const w = innerWidth, h = innerHeight;
-    renderer.setSize(w, h, false); camera.aspect = w / h; camera.fov = w / h < 0.8 ? 74 : 62; camera.updateProjectionMatrix();
+    renderer.setSize(w, h, false); camera.aspect = w / h; baseFov = w / h < 0.8 ? 74 : 62; camera.fov = baseFov * zoom; camera.updateProjectionMatrix();
   }
   addEventListener("resize", () => { resize(); dirty = true; }); resize();
 
@@ -379,8 +379,12 @@ html, body { height: 100%; }
   });
 
   let drag = null, tween = null;
-  canvas.addEventListener("pointerdown", e => { drag = { x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, moved: 0 }; canvas.setPointerCapture(e.pointerId); $("stage").classList.add("dragging"); tween = null; });
+  const ptrs = new Map(); let pinch = null;   // two-finger pinch = zoom the view (not the web page)
+  const pdist = () => { const [a, b] = [...ptrs.values()]; return Math.hypot(a.x - b.x, a.y - b.y) || 1; };
+  canvas.addEventListener("pointerdown", e => { ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (ptrs.size === 2) { pinch = { d: pdist(), z: zoom }; drag = null; return; } if (ptrs.size > 2) return; drag = { x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY, moved: 0 }; canvas.setPointerCapture(e.pointerId); $("stage").classList.add("dragging"); tween = null; });
   canvas.addEventListener("pointermove", e => {
+    if (ptrs.has(e.pointerId)) ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pinch && ptrs.size === 2) { zoom = Math.max(.4, Math.min(1, pinch.z * pinch.d / pdist())); camera.fov = baseFov * zoom; camera.updateProjectionMatrix(); dirty = true; return; }
     if (drag) {
       const dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.x = e.clientX; drag.y = e.clientY;
       drag.moved = Math.max(drag.moved, Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy));
@@ -388,9 +392,11 @@ html, body { height: 100%; }
     } else hover(e);
   });
   canvas.addEventListener("pointerup", e => {
+    ptrs.delete(e.pointerId); if (pinch) { if (ptrs.size < 2) { pinch = null; drag = null; $("stage").classList.remove("dragging"); } return; }
     const was = drag; drag = null; $("stage").classList.remove("dragging");
     if (was && was.moved < 6) pick(e);
   });
+  canvas.addEventListener("pointercancel", e => { ptrs.delete(e.pointerId); pinch = null; drag = null; $("stage").classList.remove("dragging"); });
   /* ---- old-school-RuneScape style movement: click/tap the floor, walk there at a steady pace ---- */
   let walk = null, fadeT = 0;
   const xTex = (() => { const c = document.createElement("canvas"); c.width = c.height = 64; const g = c.getContext("2d"); g.strokeStyle = "#f2c200"; g.lineWidth = 9; g.lineCap = "round"; g.beginPath(); g.moveTo(12, 12); g.lineTo(52, 52); g.moveTo(52, 12); g.lineTo(12, 52); g.stroke(); return new THREE.CanvasTexture(c); })();
