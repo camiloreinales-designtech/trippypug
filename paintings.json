@@ -1,5 +1,63 @@
 [
   {
+    "id": "p06",
+    "title": "Can’t Waste No Time, She Might Leave Soon",
+    "year": "2022",
+    "medium": "Acrylic on canvas",
+    "dimensions": "40\" × 30\"",
+    "price": "",
+    "alt": "A long-haired woman sits cross-legged by a lake and mountains, embraced from behind by a skeleton.",
+    "w": 587,
+    "h": 760
+  },
+  {
+    "id": "p08",
+    "title": "La Patrona de Brooklyn",
+    "year": "2022",
+    "medium": "Acrylic on canvas",
+    "dimensions": "28\" × 23\"",
+    "price": "",
+    "alt": "A blond-haired woman with gold jewelry sits wrapped in a checkered shawl in a bar draped with a Puerto Rican flag, with green figures behind her.",
+    "w": 588,
+    "h": 760,
+    "sold": true
+  },
+  {
+    "id": "p14",
+    "title": "Dragonrider",
+    "year": "2022",
+    "medium": "Acrylic on canvas",
+    "dimensions": "30\" × 26\"",
+    "price": "",
+    "alt": "A skeleton in a dark jacket does a handstand beside a large horned skeleton beast, against a red panel marked 424, blue walls and an orange floor.",
+    "w": 760,
+    "h": 570,
+    "sold": true
+  },
+  {
+    "id": "p24",
+    "title": "la perdición",
+    "year": "2022",
+    "medium": "Acrylic on canvas",
+    "dimensions": "40\" × 30\"",
+    "price": "",
+    "alt": "A crowd of skeletons gathers on an orange and red floor beneath a swirling turquoise sky, with a skeleton inside a glowing yellow sun, winged skeletons flying, and stacked skulls on both sides.",
+    "w": 554,
+    "h": 760,
+    "sold": true
+  },
+  {
+    "id": "p25",
+    "title": "next week is the fries",
+    "year": "2022",
+    "medium": "Acrylic on canvas",
+    "dimensions": "30\" × 26\"",
+    "price": "",
+    "alt": "A figure in a red hood, grey bomber jacket, patterned jeans and black boots walks across a bright green tiled floor past a red table stacked with burger boxes, under a cloudy turquoise sky and a rope-netted dome.",
+    "w": 566,
+    "h": 760
+  },
+  {
     "id": "p01",
     "title": "Las Verandas de Brooklyn",
     "year": "2023",
@@ -8,6 +66,42 @@
     "price": "",
     "alt": "A skeleton lies on a white-sheeted bed in a dark room. Light from an open shuttered window falls across the floor, and sunflowers wind along the skeleton.",
     "w": 588,
+    "h": 760,
+    "sold": true
+  },
+  {
+    "id": "p05",
+    "title": "Atardecer con una Diosa",
+    "year": "2023",
+    "medium": "Acrylic on canvas",
+    "dimensions": "24\" × 36\"",
+    "price": "",
+    "alt": "A giant green eye hangs over a sparkling sea. A blue bull-headed figure in a robe sits at a red-and-white checkered picnic with bones.",
+    "w": 760,
+    "h": 507,
+    "sold": true
+  },
+  {
+    "id": "p07",
+    "title": "Ballet en el Amazonas",
+    "year": "2023",
+    "medium": "Acrylic on canvas",
+    "dimensions": "24\" × 36\"",
+    "price": "",
+    "alt": "A troupe of skeletons in dark red tutus and red ballet shoes dance on a black-and-white checkered floor framed by sunflowers and vines.",
+    "w": 760,
+    "h": 503,
+    "sold": true
+  },
+  {
+    "id": "p11",
+    "title": "Anti-Auto Retrato en Cartagena",
+    "year": "2023",
+    "medium": "Acrylic on canvas",
+    "dimensions": "24\" × 36\"",
+    "price": "$2,500 USD",
+    "alt": "A large green skull and skeleton in front of colonial yellow and orange buildings and a clock tower, with small skeletons at tables.",
+    "w": 587,
     "h": 760,
     "sold": true
   },
@@ -46,53 +140,6 @@
     "h": 613
   },
   {
-    "id": "p05",
-    "title": "Atardecer con una Diosa",
-    "year": "2023",
-    "medium": "Acrylic on canvas",
-    "dimensions": "24\" × 36\"",
-    "price": "",
-    "alt": "A giant green eye hangs over a sparkling sea. A blue bull-headed figure in a robe sits at a red-and-white checkered picnic with bones.",
-    "w": 760,
-    "h": 507,
-    "sold": true
-  },
-  {
-    "id": "p06",
-    "title": "Can’t Waste No Time, She Might Leave Soon",
-    "year": "2022",
-    "medium": "Acrylic on canvas",
-    "dimensions": "40\" × 30\"",
-    "price": "",
-    "alt": "A long-haired woman sits cross-legged by a lake and mountains, embraced from behind by a skeleton.",
-    "w": 587,
-    "h": 760
-  },
-  {
-    "id": "p07",
-    "title": "Ballet en el Amazonas",
-    "year": "2023",
-    "medium": "Acrylic on canvas",
-    "dimensions": "24\" × 36\"",
-    "price": "",
-    "alt": "A troupe of skeletons in dark red tutus and red ballet shoes dance on a black-and-white checkered floor framed by sunflowers and vines.",
-    "w": 760,
-    "h": 503,
-    "sold": true
-  },
-  {
-    "id": "p08",
-    "title": "La Patrona de Brooklyn",
-    "year": "2022",
-    "medium": "Acrylic on canvas",
-    "dimensions": "28\" × 23\"",
-    "price": "",
-    "alt": "A blond-haired woman with gold jewelry sits wrapped in a checkered shawl in a bar draped with a Puerto Rican flag, with green figures behind her.",
-    "w": 588,
-    "h": 760,
-    "sold": true
-  },
-  {
     "id": "p09",
     "title": "La Reina de Williasmburg",
     "year": "2024",
@@ -116,28 +163,27 @@
     "h": 760
   },
   {
-    "id": "p11",
-    "title": "Anti-Auto Retrato en Cartagena",
-    "year": "2023",
+    "id": "p18",
+    "title": "pensando en la penumbra",
+    "year": "2024",
     "medium": "Acrylic on canvas",
-    "dimensions": "24\" × 36\"",
-    "price": "$2,500 USD",
-    "alt": "A large green skull and skeleton in front of colonial yellow and orange buildings and a clock tower, with small skeletons at tables.",
-    "w": 587,
-    "h": 760,
+    "dimensions": "40\" × 30\"",
+    "price": "",
+    "alt": "Two black skeletons sit with their backs to us in front of two tall barred windows, looking out at a blue sky fading to an orange sunset, with white light streaks across a dark grey wall.",
+    "w": 760,
+    "h": 574,
     "sold": true
   },
   {
-    "id": "p12",
-    "title": "Omerta",
-    "year": "2026",
+    "id": "p23",
+    "title": "Data",
+    "year": "2024",
     "medium": "Acrylic on canvas",
-    "dimensions": "40\" × 26\"",
+    "dimensions": "36\" × 24\"",
     "price": "",
-    "alt": "Two skeletons in 1940s-style gangster clothes, one in a white fedora, tan overcoat and red tie, the other in sunglasses and a red fur-trimmed coat, stand on a Brooklyn street in front of a red brick building under a stormy grey sky.",
+    "alt": "A skull with a pink bob haircut and wide staring eyes, wired up with bundles of colorful cables that arc across a dark grey and blue background.",
     "w": 760,
-    "h": 502,
-    "sold": true
+    "h": 486
   },
   {
     "id": "p13",
@@ -149,29 +195,6 @@
     "alt": "A skeleton wrapped in a white hood, its head tilted and arms crossed over its ribs, glows against a deep turquoise and blue spray-painted background with paint drips.",
     "w": 760,
     "h": 755
-  },
-  {
-    "id": "p14",
-    "title": "Dragonrider",
-    "year": "2022",
-    "medium": "Acrylic on canvas",
-    "dimensions": "30\" × 26\"",
-    "price": "",
-    "alt": "A skeleton in a dark jacket does a handstand beside a large horned skeleton beast, against a red panel marked 424, blue walls and an orange floor.",
-    "w": 760,
-    "h": 570,
-    "sold": true
-  },
-  {
-    "id": "p15",
-    "title": "Marrrrcria",
-    "year": "2026",
-    "medium": "Acrylic on canvas",
-    "dimensions": "20\" × 20\"",
-    "price": "",
-    "alt": "A small curled-up skeleton with dark curly hair rests its chin on its hand, floating in the middle of a large pale blue and white brushed background.",
-    "w": 760,
-    "h": 760
   },
   {
     "id": "p16",
@@ -194,18 +217,6 @@
     "alt": "A troupe of dancing skeletons in a synchronized zombie-dance pose, the lead in a red jacket, against a glowing blue and white cloudy sky and a dark stage floor with long shadows.",
     "w": 760,
     "h": 507
-  },
-  {
-    "id": "p18",
-    "title": "pensando en la penumbra",
-    "year": "2024",
-    "medium": "Acrylic on canvas",
-    "dimensions": "40\" × 30\"",
-    "price": "",
-    "alt": "Two black skeletons sit with their backs to us in front of two tall barred windows, looking out at a blue sky fading to an orange sunset, with white light streaks across a dark grey wall.",
-    "w": 760,
-    "h": 574,
-    "sold": true
   },
   {
     "id": "p19",
@@ -253,37 +264,26 @@
     "h": 760
   },
   {
-    "id": "p23",
-    "title": "Data",
-    "year": "2024",
+    "id": "p12",
+    "title": "Omerta",
+    "year": "2026",
     "medium": "Acrylic on canvas",
-    "dimensions": "36\" × 24\"",
+    "dimensions": "40\" × 26\"",
     "price": "",
-    "alt": "A skull with a pink bob haircut and wide staring eyes, wired up with bundles of colorful cables that arc across a dark grey and blue background.",
+    "alt": "Two skeletons in 1940s-style gangster clothes, one in a white fedora, tan overcoat and red tie, the other in sunglasses and a red fur-trimmed coat, stand on a Brooklyn street in front of a red brick building under a stormy grey sky.",
     "w": 760,
-    "h": 486
-  },
-  {
-    "id": "p24",
-    "title": "la perdición",
-    "year": "2022",
-    "medium": "Acrylic on canvas",
-    "dimensions": "40\" × 30\"",
-    "price": "",
-    "alt": "A crowd of skeletons gathers on an orange and red floor beneath a swirling turquoise sky, with a skeleton inside a glowing yellow sun, winged skeletons flying, and stacked skulls on both sides.",
-    "w": 554,
-    "h": 760,
+    "h": 502,
     "sold": true
   },
   {
-    "id": "p25",
-    "title": "next week is the fries",
-    "year": "2022",
+    "id": "p15",
+    "title": "Marrrrcria",
+    "year": "2026",
     "medium": "Acrylic on canvas",
-    "dimensions": "30\" × 26\"",
+    "dimensions": "20\" × 20\"",
     "price": "",
-    "alt": "A figure in a red hood, grey bomber jacket, patterned jeans and black boots walks across a bright green tiled floor past a red table stacked with burger boxes, under a cloudy turquoise sky and a rope-netted dome.",
-    "w": 566,
+    "alt": "A small curled-up skeleton with dark curly hair rests its chin on its hand, floating in the middle of a large pale blue and white brushed background.",
+    "w": 760,
     "h": 760
   }
 ]
