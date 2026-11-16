@@ -8,7 +8,8 @@
     "price": "",
     "alt": "A skeleton lies on a white-sheeted bed in a dark room. Light from an open shuttered window falls across the floor, and sunflowers wind along the skeleton.",
     "w": 588,
-    "h": 760
+    "h": 760,
+    "sold": true
   },
   {
     "id": "p02",
