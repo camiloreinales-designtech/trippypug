@@ -30,7 +30,10 @@ def figure(n, p, pos=None):
   </figcaption>
 </figure>'''
 
-simple = rd("tools/simple.template.html").replace("<!--FIGURES-->", "\n".join(figure(n, p, i) for i, (n, p) in enumerate(reversed(list(enumerate(P))))))
+import json as _j
+_ld = {"@context":"https://schema.org","@graph":[{"@type":"Person","name":"Trippy Pug","alternateName":"trippypug","url":"https://gallery.trippypug.com/","sameAs":["https://www.instagram.com/trippypug/"]}]+[{"@type":"VisualArtwork","name":p["title"],"creator":{"@type":"Person","name":"Trippy Pug"},"dateCreated":str(p["year"]),"artMedium":p["medium"],"width":p["dimensions"],"image":"https://gallery.trippypug.com/images/full/"+p["id"]+".jpg"} for p in P]}
+simple = rd("tools/simple.template.html").replace("<!--JSONLD-->", '<script type="application/ld+json">'+_j.dumps(_ld,ensure_ascii=False)+'</script>')
+simple = simple.replace("<!--FIGURES-->", "\n".join(figure(n, p, i) for i, (n, p) in enumerate(reversed(list(enumerate(P))))))
 open(os.path.join(ROOT, "simple.html"), "w", encoding="utf-8").write(simple)
 
 docs = [dict(id=p["id"], assetId="", url=f'images/full/{p["id"]}.jpg' + ver(f'images/full/{p["id"]}.jpg'), w=p["w"], h=p["h"], ts=n + 1, artist="trippypug",
