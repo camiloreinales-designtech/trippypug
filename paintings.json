@@ -271,5 +271,16 @@
     "w": 554,
     "h": 760,
     "sold": true
+  },
+  {
+    "id": "p25",
+    "title": "next week is the fries",
+    "year": "2022",
+    "medium": "Acrylic on canvas",
+    "dimensions": "30\" × 26\"",
+    "price": "",
+    "alt": "A figure in a red hood, grey bomber jacket, patterned jeans and black boots walks across a bright green tiled floor past a red table stacked with burger boxes, under a cloudy turquoise sky and a rope-netted dome.",
+    "w": 566,
+    "h": 760
   }
 ]
