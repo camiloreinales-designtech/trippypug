@@ -1,0 +1,123 @@
+[
+  {
+    "id": "p01",
+    "title": "Las Verandas de Brooklyn",
+    "year": "2023",
+    "medium": "Acrylic on canvas",
+    "dimensions": "36\" × 28\"",
+    "price": "",
+    "alt": "A skeleton lies on a white-sheeted bed in a dark room. Light from an open shuttered window falls across the floor, and sunflowers wind along the skeleton.",
+    "w": 588,
+    "h": 760
+  },
+  {
+    "id": "p02",
+    "title": "La Madona del’ Carmen",
+    "year": "2024",
+    "medium": "Acrylic on canvas",
+    "dimensions": "30\" × 24\"",
+    "price": "",
+    "alt": "A haloed woman in a blue cloak holds a small yellow skeleton child. A church clock tower rises behind them against a blue sky.",
+    "w": 588,
+    "h": 760
+  },
+  {
+    "id": "p03",
+    "title": "Nuestra Historia",
+    "year": "2024",
+    "medium": "Acrylic on canvas",
+    "dimensions": "30\" × 24\"",
+    "price": "",
+    "alt": "Two olive-green skulls face each other under a night sky of planets and eyes, above a green field and a ribcage.",
+    "w": 589,
+    "h": 760
+  },
+  {
+    "id": "p04",
+    "title": "El Alakran y las Flores",
+    "year": "2024",
+    "medium": "Acrylic on canvas",
+    "dimensions": "30\" × 36\"",
+    "price": "",
+    "alt": "A skeleton goalkeeper dives to stop a flaming soccer ball inside a goal, with a stadium crowd made of flowers behind.",
+    "w": 760,
+    "h": 613
+  },
+  {
+    "id": "p05",
+    "title": "Atardecer con una Diosa",
+    "year": "2023",
+    "medium": "Acrylic on canvas",
+    "dimensions": "24\" × 36\"",
+    "price": "",
+    "alt": "A giant green eye hangs over a sparkling sea. A blue bull-headed figure in a robe sits at a red-and-white checkered picnic with bones.",
+    "w": 760,
+    "h": 507
+  },
+  {
+    "id": "p06",
+    "title": "Can’t Waste No Time, She Might Leave Soon",
+    "year": "2022",
+    "medium": "Acrylic on canvas",
+    "dimensions": "40\" × 30\"",
+    "price": "",
+    "alt": "A long-haired woman sits cross-legged by a lake and mountains, embraced from behind by a skeleton.",
+    "w": 587,
+    "h": 760
+  },
+  {
+    "id": "p07",
+    "title": "Ballet en el Amazonas",
+    "year": "2023",
+    "medium": "Acrylic on canvas",
+    "dimensions": "24\" × 36\"",
+    "price": "",
+    "alt": "A troupe of skeletons in dark red tutus and red ballet shoes dance on a black-and-white checkered floor framed by sunflowers and vines.",
+    "w": 760,
+    "h": 503
+  },
+  {
+    "id": "p08",
+    "title": "La Patrona de Brooklyn",
+    "year": "2022",
+    "medium": "Acrylic on canvas",
+    "dimensions": "28\" × 23\"",
+    "price": "",
+    "alt": "A blond-haired woman with gold jewelry sits wrapped in a checkered shawl in a bar draped with a Puerto Rican flag, with green figures behind her.",
+    "w": 588,
+    "h": 760
+  },
+  {
+    "id": "p09",
+    "title": "La Reina de Williasmburg",
+    "year": "2024",
+    "medium": "Acrylic on canvas",
+    "dimensions": "40\" × 30\"",
+    "price": "",
+    "alt": "A woman with curly blond hair and bright rings wears a Puerto Rican flag cape in front of a stylized city skyline and bridge.",
+    "w": 589,
+    "h": 760
+  },
+  {
+    "id": "p10",
+    "title": "El Hermano de la Monalisa",
+    "year": "2024",
+    "medium": "Acrylic on canvas",
+    "dimensions": "40\" × 30\"",
+    "price": "",
+    "alt": "A man in colorful sunglasses and a skeletal jaw wears a checkered monogram shirt and a chain, posed like the Mona Lisa before a landscape.",
+    "w": 571,
+    "h": 760
+  },
+  {
+    "id": "p11",
+    "title": "Anti-Auto Retrato en Cartagena",
+    "year": "2023",
+    "medium": "Acrylic on canvas",
+    "dimensions": "24\" × 36\"",
+    "price": "$2,500 USD",
+    "alt": "A large green skull and skeleton in front of colonial yellow and orange buildings and a clock tower, with small skeletons at tables.",
+    "w": 587,
+    "h": 760
+  }
+]
