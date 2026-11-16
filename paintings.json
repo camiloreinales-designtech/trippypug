@@ -196,7 +196,8 @@
     "price": "",
     "alt": "A skull with a pink bob haircut and wide staring eyes, wired up with bundles of colorful cables that arc across a dark grey and blue background.",
     "w": 760,
-    "h": 486
+    "h": 486,
+    "sold": true
   },
   {
     "id": "p27",
