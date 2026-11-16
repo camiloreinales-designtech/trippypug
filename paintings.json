@@ -53,7 +53,8 @@
     "price": "",
     "alt": "A giant green eye hangs over a sparkling sea. A blue bull-headed figure in a robe sits at a red-and-white checkered picnic with bones.",
     "w": 760,
-    "h": 507
+    "h": 507,
+    "sold": true
   },
   {
     "id": "p06",
@@ -75,7 +76,8 @@
     "price": "",
     "alt": "A troupe of skeletons in dark red tutus and red ballet shoes dance on a black-and-white checkered floor framed by sunflowers and vines.",
     "w": 760,
-    "h": 503
+    "h": 503,
+    "sold": true
   },
   {
     "id": "p08",
@@ -86,7 +88,8 @@
     "price": "",
     "alt": "A blond-haired woman with gold jewelry sits wrapped in a checkered shawl in a bar draped with a Puerto Rican flag, with green figures behind her.",
     "w": 588,
-    "h": 760
+    "h": 760,
+    "sold": true
   },
   {
     "id": "p09",
@@ -97,7 +100,8 @@
     "price": "",
     "alt": "A woman with curly blond hair and bright rings wears a Puerto Rican flag cape in front of a stylized city skyline and bridge.",
     "w": 589,
-    "h": 760
+    "h": 760,
+    "sold": true
   },
   {
     "id": "p10",
@@ -119,6 +123,7 @@
     "price": "$2,500 USD",
     "alt": "A large green skull and skeleton in front of colonial yellow and orange buildings and a clock tower, with small skeletons at tables.",
     "w": 587,
-    "h": 760
+    "h": 760,
+    "sold": true
   }
 ]
