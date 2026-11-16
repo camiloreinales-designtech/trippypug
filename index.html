@@ -250,15 +250,15 @@ html, body { height: 100%; }
     box(W - 1.6, .04, .05, mats.rail, 0, HGT - .02, L / 2 - 1.1);
     box(.05, .04, L - 1.6, mats.rail, -W / 2 + 1.1, HGT - .02, 0);
     box(.05, .04, L - 1.6, mats.rail, W / 2 - 1.1, HGT - .02, 0);
-    // track fixtures: one per painting slot along each rail; the lights sit on three of them per wall, so the glow on the ceiling lines up with the fixtures
+    // track fixtures: one per painting slot along each rail; every fixture carries one light, so the glow on the ceiling lines up with the fixtures
     const fixMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    const kk = Math.max(3, Math.round(W / 3.4)), lightAt = new Set([Math.floor(kk * .17), Math.floor(kk / 2), kk - 1 - Math.floor(kk * .17)]);
+    const kk = Math.max(3, Math.round(W / 3.4));
     const rails = [[0, -L / 2 + 1.1, W], [0, L / 2 - 1.1, W], [-W / 2 + 1.1, 0, L], [W / 2 - 1.1, 0, L]];
     rails.forEach(([cx, cz, len], ri) => {
       for (let j = 0; j < kk; j++) {
         const a = (j + .5) * (len / kk) - len / 2, x = ri < 2 ? a : cx, z = ri < 2 ? cz : a;
         box(.08, .12, .08, fixMat, x, HGT - .1, z);
-        if (lightAt.has(j)) { const pl = new THREE.PointLight(0xffffff, .55, W * .7, 1.4); pl.position.set(x, HGT - .3, z); room.add(pl); }
+        const pl = new THREE.PointLight(0xffffff, .32, 7.5, 1.4); pl.position.set(x, HGT - .3, z); room.add(pl);
       }
     });
     // doorways
