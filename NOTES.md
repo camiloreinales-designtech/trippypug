@@ -19,3 +19,6 @@
 - In `paintings.json`, add `"pay": "https://..."` to a painting (a PayPal / Stripe / other payment link, https only). The buy box then shows a **pay securely online** button next to email and Instagram.
 - Add `"sold": true` to mark a painting sold: its label shows SOLD and the buy circle disappears.
 - After editing, run `python3 tools/build.py`, commit, and push.
+
+## Room size
+One room only. Each wall has k = ceil(paintings / 4) slots (3.4 m each + margins, min 13 m, room stays square). Paintings are split evenly over the 4 walls in tour order (left, back, right, front) and centred on the slot grid. Adding a painting fills an empty slot; the room only grows when every slot is full. Logic: `layoutRoom()` in tools/gallery.template.html.
