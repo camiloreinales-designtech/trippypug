@@ -6,6 +6,11 @@ MAIL = "trippypuginfo@gmail.com"
 P = json.load(open(os.path.join(ROOT, "paintings.json"), encoding="utf-8"))
 rd = lambda f: open(os.path.join(ROOT, f), encoding="utf-8").read()
 
+import hashlib
+def ver(path):
+    try: return "?v=" + hashlib.md5(open(os.path.join(ROOT, path), "rb").read()).hexdigest()[:8]
+    except Exception: return ""
+
 def figure(n, p):
     num = p["id"][1:]
     q = lambda t: urllib.parse.quote(t, safe="")
@@ -18,7 +23,7 @@ def figure(n, p):
     lazy = "" if n < 2 else ' loading="lazy"'
     t = html.escape(p["title"], quote=False)
     return f'''<figure id="p{n + 1}">
-  <a href="images/full/p{num}.jpg" aria-label="View {html.escape(p["title"], quote=True)} full size"><img src="images/p{num}.jpg" width="{p["w"]}" height="{p["h"]}" alt="{html.escape(p["alt"], quote=True)}"{lazy} decoding="async">{dot}</a>
+  <a href="images/full/p{num}.jpg{ver("images/full/p"+num+".jpg")}" aria-label="View {html.escape(p["title"], quote=True)} full size"><img src="images/p{num}.jpg{ver("images/p"+num+".jpg")}" width="{p["w"]}" height="{p["h"]}" alt="{html.escape(p["alt"], quote=True)}"{lazy} decoding="async">{dot}</a>
   <figcaption>
     <div class="lab"><span class="a">trippypug</span><span class="t"><b>{t}</b> {p["year"]}</span><span>{html.escape(p["medium"], quote=False)}</span><span class="d">{html.escape(p["dimensions"], quote=True)}</span>{price}</div>
     {buy}
@@ -28,7 +33,7 @@ def figure(n, p):
 simple = rd("tools/simple.template.html").replace("<!--FIGURES-->", "\n".join(figure(n, p) for n, p in enumerate(P)))
 open(os.path.join(ROOT, "simple.html"), "w", encoding="utf-8").write(simple)
 
-docs = [dict(id=p["id"], assetId="", url=f'images/full/{p["id"]}.jpg', w=p["w"], h=p["h"], ts=n + 1, artist="trippypug",
+docs = [dict(id=p["id"], assetId="", url=f'images/full/{p["id"]}.jpg' + ver(f'images/full/{p["id"]}.jpg'), w=p["w"], h=p["h"], ts=n + 1, artist="trippypug",
              title=p["title"], year=p["year"], medium=p["medium"], dimensions=p["dimensions"], price=p.get("price", ""), pay=p.get("pay", ""), sold=bool(p.get("sold")), origin="")
         for n, p in enumerate(P)]
 stub = ("<script>window.claude={use:async n=>n==='db'?{collection:()=>({orderBy:()=>({onSnapshot:cb=>setTimeout(()=>cb({docs:"
