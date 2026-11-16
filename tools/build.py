@@ -11,7 +11,7 @@ def ver(path):
     try: return "?v=" + hashlib.md5(open(os.path.join(ROOT, path), "rb").read()).hexdigest()[:8]
     except Exception: return ""
 
-def figure(n, p):
+def figure(n, p, pos=None):
     num = p["id"][1:]
     q = lambda t: urllib.parse.quote(t, safe="")
     detail = f'{p["year"]}, {p["medium"]}, {p["dimensions"]}'
@@ -20,7 +20,7 @@ def figure(n, p):
     price = f'<span class="d">{"SOLD" if p.get("sold") else html.escape(p["price"], quote=True)}</span>' if p.get("price") or p.get("sold") else ""
     dot = '<i class="dot" aria-hidden="true"></i>' if p.get("sold") else ""
     buy = "" if p.get("sold") else f'<a class="buy" href="{mail}" aria-label="I want to buy {html.escape(p["title"], quote=True)}">i want<br>to buy<br>it</a>'
-    lazy = "" if n < 2 else ' loading="lazy"'
+    lazy = "" if (n if pos is None else pos) < 2 else ' loading="lazy"'
     t = html.escape(p["title"], quote=False)
     return f'''<figure id="p{n + 1}">
   <a href="images/full/p{num}.jpg{ver("images/full/p"+num+".jpg")}" aria-label="View {html.escape(p["title"], quote=True)} full size"><img src="images/p{num}.jpg{ver("images/p"+num+".jpg")}" width="{p["w"]}" height="{p["h"]}" alt="{html.escape(p["alt"], quote=True)}"{lazy} decoding="async">{dot}</a>
@@ -30,7 +30,7 @@ def figure(n, p):
   </figcaption>
 </figure>'''
 
-simple = rd("tools/simple.template.html").replace("<!--FIGURES-->", "\n".join(figure(n, p) for n, p in enumerate(P)))
+simple = rd("tools/simple.template.html").replace("<!--FIGURES-->", "\n".join(figure(n, p, i) for i, (n, p) in enumerate(reversed(list(enumerate(P))))))
 open(os.path.join(ROOT, "simple.html"), "w", encoding="utf-8").write(simple)
 
 docs = [dict(id=p["id"], assetId="", url=f'images/full/{p["id"]}.jpg' + ver(f'images/full/{p["id"]}.jpg'), w=p["w"], h=p["h"], ts=n + 1, artist="trippypug",
