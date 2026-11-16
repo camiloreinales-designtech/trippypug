@@ -485,13 +485,13 @@ html, body { height: 100%; }
     const turn = (keys.arrowleft || keys.padl ? 1 : 0) - (keys.arrowright || keys.padr ? 1 : 0);
     if (f || sd || turn) { tween = null; dollyT = null; walk = null; marker.visible = false; }
     if (walk) {
-      const dx = walk.x - view.x, dz = walk.z - view.z, d = Math.hypot(dx, dz), st = 2.4 * dt;
+      const dx = walk.x - view.x, dz = walk.z - view.z, d = Math.hypot(dx, dz), st = 7.2 * dt;
       if (d <= st) { view.x = walk.x; view.z = walk.z; walk = null; fadeT = 1.4; } else { view.x += dx / d * st; view.z += dz / d * st; }
       dirty = true;
     }
     if (!walk && fadeT > 0) { fadeT -= dt; if (fadeT <= 0) { marker.visible = false; } dirty = true; }
     view.yaw += turn * 1.7 * dt;
-    const sp = 2.2 * dt, fx = -Math.sin(view.yaw), fz = -Math.cos(view.yaw), rx = Math.cos(view.yaw), rz = -Math.sin(view.yaw);
+    const sp = 6.6 * dt, fx = -Math.sin(view.yaw), fz = -Math.cos(view.yaw), rx = Math.cos(view.yaw), rz = -Math.sin(view.yaw);
     view.x += (fx * f + rx * sd) * sp; view.z += (fz * f + rz * sd) * sp;
     view.x = Math.max(-W / 2 + .5, Math.min(W / 2 - .5, view.x)); view.z = Math.max(-L / 2 + .5, Math.min(L / 2 - .5, view.z));
     if (performance.now() - lastSwitch > 1300 && !dollyT && !tween) {
