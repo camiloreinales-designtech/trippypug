@@ -20,7 +20,8 @@
     "price": "",
     "alt": "A haloed woman in a blue cloak holds a small yellow skeleton child. A church clock tower rises behind them against a blue sky.",
     "w": 588,
-    "h": 760
+    "h": 760,
+    "sold": true
   },
   {
     "id": "p03",
