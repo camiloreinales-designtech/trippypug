@@ -344,7 +344,7 @@ html, body { height: 100%; }
       lab.position.set(w / 2 + .14 + lw / 2, -h / 2 + lh / 2 + (ART_CY - .02 > h / 2 ? 0 : 0), .005); g.add(lab);
       const buy = new THREE.Mesh(new THREE.PlaneGeometry(.2, .2), new THREE.MeshBasicMaterial({ map: buyTex, transparent: true, depthWrite: false }));
       if (!p.sold) { buy.position.set(w / 2 - .1, -h / 2 - .17, .006); buy.userData.buy = p.id; g.add(buy); buyHit.push(buy); }
-      if (p.sold) { const dot = new THREE.Mesh(new THREE.CircleGeometry(.016, 32), new THREE.MeshBasicMaterial({ color: 0xd62828 })); dot.position.set(w / 2 - .03, -h / 2 - .06, .006); g.add(dot); }
+      if (p.sold) { const dot = new THREE.Mesh(new THREE.CircleGeometry(.03, 32), new THREE.MeshBasicMaterial({ color: 0xd62828 })); dot.position.set(w / 2 - .05, -h / 2 - .08, .006); g.add(dot); }
       works.add(g);
       const lamp = new THREE.Mesh(new THREE.CylinderGeometry(.04, .055, .15, 12), mats.metal);
       lamp.position.set(s.x + s.nx * 1.1, HGT - .12, s.z + s.nz * 1.1); works.add(lamp);
