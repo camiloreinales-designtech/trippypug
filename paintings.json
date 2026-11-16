@@ -125,5 +125,16 @@
     "w": 587,
     "h": 760,
     "sold": true
+  },
+  {
+    "id": "p12",
+    "title": "Omerta",
+    "year": "2026",
+    "medium": "Acrylic on canvas",
+    "dimensions": "40\" × 26\"",
+    "price": "",
+    "alt": "Two skeletons in 1940s-style gangster clothes, one in a white fedora, tan overcoat and red tie, the other in sunglasses and a red fur-trimmed coat, stand on a Brooklyn street in front of a red brick building under a stormy grey sky.",
+    "w": 760,
+    "h": 502
   }
 ]
