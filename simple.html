@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Trippy Pug</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Paintings by trippypug: skeletons, flowers and everyday life, in acrylic on canvas.">
@@ -14,8 +15,11 @@ a:focus-visible { outline: 3px solid #ff3b6b; outline-offset: 3px; }
 header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 22px; }
 header .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 header { align-items: flex-start; }
+header img { height: auto !important; display: block; }
 header .lft { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
-header .lft img { width: min(288px, 38vw); }
+header .lft img { width: min(336px, 42vw); }
+header .lft .back img { width: min(336px, 42vw); }
+@media (max-width: 560px) { header .lft img, header .lft .back img { width: min(256px, 42vw); } }
 header > a img { width: min(440px, 50vw); }
 @keyframes shk { 0%,100% { transform: translate(0,0) rotate(0); } 20% { transform: translate(1.5px,-1px) rotate(-.7deg); } 40% { transform: translate(-1px,1.5px) rotate(.6deg); } 60% { transform: translate(1px,1px) rotate(-.4deg); } 80% { transform: translate(-1.5px,-.5px) rotate(.8deg); } }
 header img.shk { animation: shk .6s steps(1, end) infinite; }
@@ -42,7 +46,7 @@ footer b { color: var(--ink); user-select: all; }
 </style>
 <a class="skip" href="#works">Skip to paintings</a>
 <div class="wrap">
-<header><div class="lft"><a href="https://www.instagram.com/trippypug/" target="_blank" rel="noopener" aria-label="@trippypug on Instagram"><img class="shk" src="images/logo.png" width="72" height="48" alt="trippy pug"></a><a class="back" href="index.html" aria-label="Back to the 3D gallery">&larr; gallery</a></div><a href="https://www.instagram.com/trippypug/" target="_blank" rel="noopener" aria-label="@trippypug on Instagram"><img class="shk" src="images/instagram.png" width="110" height="34" alt="@trippypug" style="display:block"></a></header>
+<header><div class="lft"><a href="https://www.instagram.com/trippypug/" target="_blank" rel="noopener" aria-label="@trippypug on Instagram"><img class="shk" src="images/logo.png" width="72" height="48" alt="trippy pug"></a><a class="back" href="index.html" aria-label="Go back to gallery"><img class="shk" src="images/gallery-btn.png" width="440" height="73" alt="go back to gallery"></a></div><a href="https://www.instagram.com/trippypug/" target="_blank" rel="noopener" aria-label="@trippypug on Instagram"><img class="shk" src="images/instagram.png" width="110" height="34" alt="@trippypug" style="display:block"></a></header>
 <main>
 <h1>Trippy Pug paintings</h1>
 <section class="intro" aria-label="Artist statement">
