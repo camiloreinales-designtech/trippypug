@@ -250,14 +250,12 @@ html, body { height: 100%; }
     box(W - 1.6, .04, .05, mats.rail, 0, HGT - .02, L / 2 - 1.1);
     box(.05, .04, L - 1.6, mats.rail, -W / 2 + 1.1, HGT - .02, 0);
     box(.05, .04, L - 1.6, mats.rail, W / 2 - 1.1, HGT - .02, 0);
-    // track fixtures: one per painting slot along each rail; every fixture carries one light, so the glow on the ceiling lines up with the fixtures
-    const fixMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    // lights: one per painting slot along each rail (no visible fixture models)
     const kk = Math.max(3, Math.round(W / 3.4));
     const rails = [[0, -L / 2 + 1.1, W], [0, L / 2 - 1.1, W], [-W / 2 + 1.1, 0, L], [W / 2 - 1.1, 0, L]];
     rails.forEach(([cx, cz, len], ri) => {
       for (let j = 0; j < kk; j++) {
         const a = (j + .5) * (len / kk) - len / 2, x = ri < 2 ? a : cx, z = ri < 2 ? cz : a;
-        box(.08, .12, .08, fixMat, x, HGT - .1, z);
         const pl = new THREE.PointLight(0xffffff, .32, 7.5, 1.4); pl.position.set(x, HGT - .3, z); room.add(pl);
       }
     });
@@ -360,8 +358,6 @@ html, body { height: 100%; }
       if (!p.sold) { buy.position.set(w / 2 - .1, -h / 2 - .17, .006); buy.userData.buy = p.id; g.add(buy); buyHit.push(buy); }
       if (p.sold) { const dot = new THREE.Mesh(new THREE.CircleGeometry(.03, 32), new THREE.MeshBasicMaterial({ color: 0xd62828 })); dot.position.set(w / 2 - .05, -h / 2 - .08, .006); g.add(dot); }
       works.add(g);
-      const lamp = new THREE.Mesh(new THREE.CylinderGeometry(.04, .055, .15, 12), mats.metal);
-      lamp.position.set(s.x + s.nx * 1.1, HGT - .12, s.z + s.nz * 1.1); works.add(lamp);
       g.userData = { p, w, h, s };
     });
     $("note").textContent = items.length ? "" : (canEdit ? "the walls are empty.\nuse “+ add painting” to hang your first one." : "paintings are coming soon.");
