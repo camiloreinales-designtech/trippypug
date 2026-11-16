@@ -469,7 +469,7 @@ html, body { height: 100%; }
     btn.addEventListener("click", toggle);
   })();
 
-  const clock = new THREE.Clock(); let lastSig = "";
+  const clock = new THREE.Clock(); let lastSig = ""; let hcF = 0, hLX = 0, hLZ = 0, hMv = 0, hPh = 0;
   function frame() {
     requestAnimationFrame(frame);
     if (document.hidden) { clock.getDelta(); return; }
@@ -499,9 +499,22 @@ html, body { height: 100%; }
       else if (roomIdx > 0 && view.z > L / 2 - .8 && Math.abs(view.x - DOOR_PREV.x) < .6) goRoom(roomIdx - 1);
     }
     const sig = view.x + "," + view.z + "," + view.yaw + "," + view.pitch;
-    if (sig === lastSig && !dirty) return;            // nothing moved: skip the draw, save battery
+    const still = sig === lastSig && !dirty;
+    // hand-held camera: a very small sway while standing, a gentle step bob while walking. Visual only, never changes where you are.
+    let hy = 0, hp = 0, hr = 0, hx = 0, hv = 0;
+    if (!reduce) {
+      if (still && (hcF++ & 1)) return;               // idle: draw at half rate to spare the battery
+      const t = performance.now() / 1000;
+      const mv = dt > 0 ? Math.hypot(view.x - hLX, view.z - hLZ) / dt : 0; hLX = view.x; hLZ = view.z;
+      hMv += (Math.min(mv, 8) - hMv) * Math.min(1, dt * 6); hPh += hMv * dt * 1.9;
+      const w = Math.min(1, hMv / 5);
+      hy = Math.sin(t * .55) * .0035 + Math.sin(t * 1.3 + 1) * .0015 + Math.sin(hPh * .5) * .004 * w;
+      hp = Math.sin(t * .7 + 2) * .003 + Math.sin(t * 1.9) * .001 + Math.sin(hPh) * .005 * w;
+      hr = Math.sin(t * .45 + 4) * .004 + Math.sin(hPh * .5) * .006 * w;
+      hx = Math.sin(t * .6) * .004 + Math.sin(hPh * .5) * .012 * w; hv = Math.sin(t * .8 + 1) * .004 + Math.abs(Math.sin(hPh * .5)) * .025 * w;
+    } else if (still) return;                          // nothing moved: skip the draw, save battery
     lastSig = sig; dirty = false;
-    camera.position.set(view.x, EYE, view.z); camera.rotation.set(view.pitch, view.yaw, 0);
+    camera.position.set(view.x + hx * Math.cos(view.yaw), EYE + hv, view.z - hx * Math.sin(view.yaw)); camera.rotation.set(view.pitch + hp, view.yaw + hy, hr);
     renderer.render(scene, camera);
   }
 
