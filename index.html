@@ -394,14 +394,14 @@ html, body { height: 100%; }
   const marker = new THREE.Mesh(new THREE.PlaneGeometry(.3, .3), new THREE.MeshBasicMaterial({ map: xTex, transparent: true, depthWrite: false }));
   marker.rotation.x = -Math.PI / 2; marker.visible = false; scene.add(marker);
   function walkToPoint(x, z) {
-    x = Math.max(-W / 2 + .5, Math.min(W / 2 - .5, x)); z = Math.max(-L / 2 + .5, Math.min(L / 2 - .5, z));
+    x = Math.max(-W / 2 + 1.1, Math.min(W / 2 - 1.1, x)); z = Math.max(-L / 2 + 1.1, Math.min(L / 2 - 1.1, z));   // stay clear of the walls and doorways
     const dx = x - view.x, dz = z - view.z, d = Math.hypot(dx, dz), back = d > 1.4 ? 1.0 : d * .45;   // stop in front of the X so it stays in view
     walk = { x: x - dx / (d || 1) * back, z: z - dz / (d || 1) * back, fade: 0 }; tween = null; dollyT = null; marker.position.set(x, .02, z); marker.visible = true; fadeT = 0; marker.scale.setScalar(1.3); dirty = true;
   }
   const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(), floorPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), floorPt = new THREE.Vector3();
   function cast(e) { const r = canvas.getBoundingClientRect(); mouse.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); ray.setFromCamera(mouse, camera); return ray.intersectObjects(hit.concat(doorMeshes, buyHit), false)[0]; }
   function hover(e) { $("stage").classList.toggle("hot", !!cast(e)); }
-  function pick(e) { const h = cast(e); if (!h) { if (ray.ray.intersectPlane(floorPlane, floorPt)) walkToPoint(floorPt.x, floorPt.z); return; } if (h.object.userData.buy) openBuy(h.object.userData.buy); else if (h.object.userData.door !== undefined) goRoom(h.object.userData.door); else focusItem(h.object.userData.id); }
+  function pick(e) { const h = cast(e); if (!h) { const r = ray.intersectObjects(room.children, false)[0]; if (r && r.point.y < HGT - .05) walkToPoint(r.point.x, r.point.z); return; } if (h.object.userData.buy) openBuy(h.object.userData.buy); else if (h.object.userData.door !== undefined) goRoom(h.object.userData.door); else focusItem(h.object.userData.id); }
 
   function flyTo(id) {
     const g = works.children.find(o => o.userData.p && o.userData.p.id === id); if (!g) return;
