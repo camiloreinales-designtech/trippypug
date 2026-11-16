@@ -410,7 +410,7 @@ html, body { height: 100%; }
   const ray = new THREE.Raycaster(), mouse = new THREE.Vector2(), floorPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), floorPt = new THREE.Vector3();
   function cast(e) { const r = canvas.getBoundingClientRect(); mouse.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); ray.setFromCamera(mouse, camera); return ray.intersectObjects(hit.concat(doorMeshes, buyHit), false)[0]; }
   function hover(e) { $("stage").classList.toggle("hot", !!cast(e)); }
-  function pick(e) { const h = cast(e); if (!h) { const r = ray.intersectObjects(room.children, false)[0]; if (r && r.point.y < HGT - .05) walkToPoint(r.point.x, r.point.z); return; } if (h.object.userData.buy) openBuy(h.object.userData.buy); else if (h.object.userData.door !== undefined) goRoom(h.object.userData.door); else focusItem(h.object.userData.id); }
+  function pick(e) { const h = cast(e); if (!h) { const r = ray.intersectObjects(room.children, false)[0]; if (r && r.point.y < .08) walkToPoint(r.point.x, r.point.z); return; } if (h.object.userData.buy) openBuy(h.object.userData.buy); else if (h.object.userData.door !== undefined) goRoom(h.object.userData.door); else focusItem(h.object.userData.id); }
 
   function flyTo(id) {
     const g = works.children.find(o => o.userData.p && o.userData.p.id === id); if (!g) return;
