@@ -185,23 +185,33 @@ html, body { height: 100%; }
 
   // polished concrete: generated texture (soft mottling, fine aggregate, faint grain)
   const concreteTex = (() => {
-    const N = 512, c = document.createElement("canvas"); c.width = c.height = N;
+    const N = 1024, c = document.createElement("canvas"); c.width = c.height = N;
     const g = c.getContext("2d"), img = g.createImageData(N, N), d = img.data;
     let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
     for (let i = 0; i < N * N; i++) { const v = 196 + rnd() * 10; d[i * 4] = v; d[i * 4 + 1] = v; d[i * 4 + 2] = v - 2; d[i * 4 + 3] = 255; }
     g.putImageData(img, 0, 0);
     const wrapDraw = (x, y, r, fn) => { for (const ox of [-N, 0, N]) for (const oy of [-N, 0, N]) if (x + ox + r > 0 && x + ox - r < N && y + oy + r > 0 && y + oy - r < N) fn(x + ox, y + oy); };
-    for (let i = 0; i < 2600; i++) {                     // fine aggregate, no large features to betray the repeat
+    for (let i = 0; i < 6000; i++) {                     // fine aggregate, no large features to betray the repeat
       const x = rnd() * N, y = rnd() * N, a = .04 + rnd() * .1, w = 1 + rnd() * 1.2;
       g.fillStyle = rnd() < .6 ? `rgba(70,70,68,${a})` : `rgba(255,255,255,${a})`;
       wrapDraw(x, y, 3, (px, py) => g.fillRect(px, py, w, w));
     }
+    const crack = (x, y, ang, len, w) => {               // hairline crack: jittered walk, wrapped so it tiles
+      const pts = [[x, y]];
+      for (let k = 0; k < len; k++) { ang += (rnd() - .5) * .7; x += Math.cos(ang) * (5 + rnd() * 8); y += Math.sin(ang) * (5 + rnd() * 8); pts.push([x, y]); if (rnd() < .035 && w > .5) crack(x, y, ang + (rnd() < .5 ? -1 : 1) * (.5 + rnd() * .6), Math.floor(len * .45), w * .6); }
+      for (const ox of [-N, 0, N]) for (const oy of [-N, 0, N]) {
+        g.beginPath(); pts.forEach(([a, b], i) => i ? g.lineTo(a + ox, b + oy) : g.moveTo(a + ox, b + oy));
+        g.lineJoin = "round"; g.strokeStyle = "rgba(255,255,255,.22)"; g.lineWidth = w + .8; g.stroke();
+        g.strokeStyle = "rgba(55,55,52,.45)"; g.lineWidth = w; g.stroke();
+      }
+    };
+    for (let i = 0; i < 5; i++) crack(rnd() * N, rnd() * N, rnd() * Math.PI * 2, 45 + Math.floor(rnd() * 50), 1);
     const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.encoding = THREE.sRGBEncoding; t.anisotropy = 4;
     return t;
   })();
   const mats = {
     wall: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 }),
-    floor: new THREE.MeshStandardMaterial({ color: 0xffffff, map: concreteTex, roughness: .32, metalness: 0 }),
+    floor: new THREE.MeshPhysicalMaterial({ color: 0xffffff, map: concreteTex, roughness: .28, metalness: 0, clearcoat: .7, clearcoatRoughness: .12 }),
     ceil: new THREE.MeshStandardMaterial({ color: 0xf2f2f0, roughness: 1 }),
     frame: new THREE.MeshStandardMaterial({ color: 0x0b0b0b, roughness: .5 }),
     metal: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .4 }),
@@ -251,7 +261,7 @@ html, body { height: 100%; }
     dirty = true;
     doorMeshes.length = 0;
     const plane = (w, h, mat, pos, rot) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat); m.position.set(...pos); m.rotation.set(...rot); room.add(m); return m; };
-    concreteTex.repeat.set(W / 2.5, L / 2.5); mats.floor.needsUpdate = true;
+    concreteTex.repeat.set(W / 6, L / 6); mats.floor.needsUpdate = true;
     plane(W, L, mats.floor, [0, 0, 0], [-Math.PI / 2, 0, 0]);
     plane(W, L, mats.ceil, [0, HGT, 0], [Math.PI / 2, 0, 0]);
     plane(W, HGT, mats.wall, [0, HGT / 2, -L / 2], [0, 0, 0]);
