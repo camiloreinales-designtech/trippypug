@@ -347,7 +347,7 @@ html, body { height: 100%; }
       const ratio = (p.w && p.h) ? p.w / p.h : 1.2, [longIn, shortIn] = sizeIn(p);
       const w = (ratio >= 1 ? longIn : shortIn) * IN, h = (ratio >= 1 ? shortIn : longIn) * IN;   // real size in metres
       const g = new THREE.Group();
-      g.position.set(s.x + s.nx * 0.02, ART_CY, s.z + s.nz * 0.02); g.rotation.y = s.ry;
+      g.position.set(s.x + s.nx * 2 * .0254, ART_CY, s.z + s.nz * 2 * .0254); g.rotation.y = s.ry;
       const mat = new THREE.MeshBasicMaterial({ color: 0xdddddd });
       const pic = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat); pic.position.z = .01; pic.userData.id = p.id; g.add(pic); hit.push(pic);
       getTex(p.assetId ? "/_blob/" + p.assetId : p.url, t => { mat.map = t; mat.color.set(0xffffff); mat.needsUpdate = true; });
