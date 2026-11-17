@@ -209,9 +209,21 @@ html, body { height: 100%; }
     const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.encoding = THREE.sRGBEncoding; t.anisotropy = 4;
     return t;
   })();
+  // one big non-repeating tonal map over the whole floor (cloudy darker/lighter areas, like a real slab pour)
+  const toneTex = (() => {
+    const N = 1024, c = document.createElement("canvas"); c.width = c.height = N; const g = c.getContext("2d");
+    let seed = 91; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < 70; i++) {
+      const x = rnd() * N, y = rnd() * N, r = 70 + rnd() * 230, dark = rnd() < .62, a = .07 + rnd() * .12;
+      const gr = g.createRadialGradient(x, y, 0, x, y, r);
+      gr.addColorStop(0, dark ? `rgba(30,30,28,${a})` : `rgba(255,255,252,${a * .6})`); gr.addColorStop(1, "rgba(0,0,0,0)");
+      g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2);
+    }
+    const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; return t;
+  })();
   const mats = {
     wall: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 }),
-    floor: new THREE.MeshPhysicalMaterial({ color: 0xffffff, map: concreteTex, roughness: .28, metalness: 0, clearcoat: .7, clearcoatRoughness: .12 }),
+    floor: new THREE.MeshPhysicalMaterial({ color: 0xaeaeac, map: concreteTex, roughness: .28, metalness: 0, clearcoat: .7, clearcoatRoughness: .12 }),
     ceil: new THREE.MeshStandardMaterial({ color: 0xf2f2f0, roughness: 1 }),
     frame: new THREE.MeshStandardMaterial({ color: 0x0b0b0b, roughness: .5 }),
     metal: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .4 }),
@@ -263,6 +275,7 @@ html, body { height: 100%; }
     const plane = (w, h, mat, pos, rot) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat); m.position.set(...pos); m.rotation.set(...rot); room.add(m); return m; };
     concreteTex.repeat.set(W / 6, L / 6); mats.floor.needsUpdate = true;
     plane(W, L, mats.floor, [0, 0, 0], [-Math.PI / 2, 0, 0]);
+    plane(W, L, new THREE.MeshBasicMaterial({ map: toneTex, transparent: true, depthWrite: false }), [0, .003, 0], [-Math.PI / 2, 0, 0]);
     plane(W, L, mats.ceil, [0, HGT, 0], [Math.PI / 2, 0, 0]);
     plane(W, HGT, mats.wall, [0, HGT / 2, -L / 2], [0, 0, 0]);
     plane(W, HGT, mats.wall, [0, HGT / 2, L / 2], [0, Math.PI, 0]);
@@ -680,4 +693,4 @@ html, body { height: 100%; }
 })();
 
 </script>
-<a href="simple.html" style="position:fixed;left:12px;bottom:10px;z-index:5;font:12px Helvetica,Arial,sans-serif;color:#555">simple view</a></body></html>
+<a href="simple.html" style="position:fixed;left:12px;bottom:10px;z-index:5;font:12px Helvetica,Arial,sans-serif;color:#e8e8e6;text-shadow:0 0 3px #000">simple view</a></body></html>
