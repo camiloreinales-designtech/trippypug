@@ -347,16 +347,17 @@ html, body { height: 100%; }
       const ratio = (p.w && p.h) ? p.w / p.h : 1.2, [longIn, shortIn] = sizeIn(p);
       const w = (ratio >= 1 ? longIn : shortIn) * IN, h = (ratio >= 1 ? shortIn : longIn) * IN;   // real size in metres
       const g = new THREE.Group();
-      g.position.set(s.x + s.nx * 2 * .0254, ART_CY, s.z + s.nz * 2 * .0254); g.rotation.y = s.ry;
+      const D = 2 * .0254; g.position.set(s.x + s.nx * .005, ART_CY, s.z + s.nz * .005); g.rotation.y = s.ry;
       const mat = new THREE.MeshBasicMaterial({ color: 0xdddddd });
-      const pic = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat); pic.position.z = .01; pic.userData.id = p.id; g.add(pic); hit.push(pic);
+      const edge = new THREE.MeshBasicMaterial({ color: 0xf2efe6 }), back = new THREE.MeshBasicMaterial({ color: 0x3a3a3a });
+      const pic = new THREE.Mesh(new THREE.BoxGeometry(w, h, D), [edge, edge, edge, edge, mat, back]); pic.position.z = D / 2; pic.userData.id = p.id; g.add(pic); hit.push(pic);
       getTex(p.assetId ? "/_blob/" + p.assetId : p.url, t => { mat.map = t; mat.color.set(0xffffff); mat.needsUpdate = true; });
       const lt = labelTexture(p), lw = .46, lh = lw / lt.userData.ratio;
       const lab = new THREE.Mesh(new THREE.PlaneGeometry(lw, lh), new THREE.MeshBasicMaterial({ map: lt, transparent: true, depthWrite: false }));
-      lab.position.set(w / 2 + .14 + lw / 2, -h / 2 + lh / 2 + (ART_CY - .02 > h / 2 ? 0 : 0), .005); g.add(lab);
+      lab.position.set(w / 2 + .14 + lw / 2, -h / 2 + lh / 2 + (ART_CY - .02 > h / 2 ? 0 : 0), D + .005); g.add(lab);
       const buy = new THREE.Mesh(new THREE.PlaneGeometry(.2, .2), new THREE.MeshBasicMaterial({ map: buyTex, transparent: true, depthWrite: false }));
-      if (!p.sold) { buy.position.set(w / 2 - .1, -h / 2 - .17, .006); buy.userData.buy = p.id; g.add(buy); buyHit.push(buy); }
-      if (p.sold) { const dot = new THREE.Mesh(new THREE.CircleGeometry(.03, 32), new THREE.MeshBasicMaterial({ color: 0xd62828 })); dot.position.set(w / 2 - .05, -h / 2 - .08, .006); g.add(dot); }
+      if (!p.sold) { buy.position.set(w / 2 - .1, -h / 2 - .17, D + .006); buy.userData.buy = p.id; g.add(buy); buyHit.push(buy); }
+      if (p.sold) { const dot = new THREE.Mesh(new THREE.CircleGeometry(.03, 32), new THREE.MeshBasicMaterial({ color: 0xd62828 })); dot.position.set(w / 2 - .05, -h / 2 - .08, D + .006); g.add(dot); }
       works.add(g);
       g.userData = { p, w, h, s };
     });
