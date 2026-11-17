@@ -394,7 +394,7 @@ html, body { height: 100%; }
       const ratio = (p.w && p.h) ? p.w / p.h : 1.2, [longIn, shortIn] = sizeIn(p);
       const w = (ratio >= 1 ? longIn : shortIn) * IN, h = (ratio >= 1 ? shortIn : longIn) * IN;   // real size in metres
       const g = new THREE.Group();
-      const D = 2 * .0254; g.position.set(s.x + s.nx * .005, ART_CY, s.z + s.nz * .005); g.rotation.y = s.ry;
+      const D = 1.25 * .0254; g.position.set(s.x + s.nx * .005, ART_CY, s.z + s.nz * .005); g.rotation.y = s.ry;
       const mat = new THREE.MeshBasicMaterial({ color: 0xdddddd });
       const edge = new THREE.MeshBasicMaterial({ color: 0xf2efe6 }), back = new THREE.MeshBasicMaterial({ color: 0x3a3a3a });
       const pic = new THREE.Mesh(new THREE.BoxGeometry(w, h, D), [edge, edge, edge, edge, mat, back]); pic.position.z = D / 2; pic.userData.id = p.id; g.add(pic); hit.push(pic);
