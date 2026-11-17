@@ -191,10 +191,6 @@ html, body { height: 100%; }
     for (let i = 0; i < N * N; i++) { const v = 196 + rnd() * 10; d[i * 4] = v; d[i * 4 + 1] = v; d[i * 4 + 2] = v - 2; d[i * 4 + 3] = 255; }
     g.putImageData(img, 0, 0);
     const wrapDraw = (x, y, r, fn) => { for (const ox of [-N, 0, N]) for (const oy of [-N, 0, N]) if (x + ox + r > 0 && x + ox - r < N && y + oy + r > 0 && y + oy - r < N) fn(x + ox, y + oy); };
-    for (let i = 0; i < 60; i++) {                       // very soft tonal mottling, wrapped so the tile is seamless
-      const x = rnd() * N, y = rnd() * N, r = 90 + rnd() * 160, dark = rnd() < .5;
-      wrapDraw(x, y, r, (px, py) => { const gr = g.createRadialGradient(px, py, 0, px, py, r); gr.addColorStop(0, dark ? "rgba(120,120,116,.035)" : "rgba(255,255,255,.035)"); gr.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = gr; g.fillRect(px - r, py - r, r * 2, r * 2); });
-    }
     for (let i = 0; i < 2600; i++) {                     // fine aggregate, no large features to betray the repeat
       const x = rnd() * N, y = rnd() * N, a = .04 + rnd() * .1, w = 1 + rnd() * 1.2;
       g.fillStyle = rnd() < .6 ? `rgba(70,70,68,${a})` : `rgba(255,255,255,${a})`;
@@ -255,7 +251,7 @@ html, body { height: 100%; }
     dirty = true;
     doorMeshes.length = 0;
     const plane = (w, h, mat, pos, rot) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat); m.position.set(...pos); m.rotation.set(...rot); room.add(m); return m; };
-    concreteTex.repeat.set(W / 6, L / 6); mats.floor.needsUpdate = true;
+    concreteTex.repeat.set(W / 2.5, L / 2.5); mats.floor.needsUpdate = true;
     plane(W, L, mats.floor, [0, 0, 0], [-Math.PI / 2, 0, 0]);
     plane(W, L, mats.ceil, [0, HGT, 0], [Math.PI / 2, 0, 0]);
     plane(W, HGT, mats.wall, [0, HGT / 2, -L / 2], [0, 0, 0]);
