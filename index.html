@@ -183,9 +183,29 @@ html, body { height: 100%; }
   }
   addEventListener("resize", () => { resize(); dirty = true; }); resize();
 
+  // polished concrete: generated texture (soft mottling, fine aggregate, faint grain)
+  const concreteTex = (() => {
+    const N = 512, c = document.createElement("canvas"); c.width = c.height = N;
+    const g = c.getContext("2d"), img = g.createImageData(N, N), d = img.data;
+    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < N * N; i++) { const v = 196 + rnd() * 10; d[i * 4] = v; d[i * 4 + 1] = v; d[i * 4 + 2] = v - 2; d[i * 4 + 3] = 255; }
+    g.putImageData(img, 0, 0);
+    for (let i = 0; i < 90; i++) {                       // soft tonal mottling
+      const x = rnd() * N, y = rnd() * N, r = 40 + rnd() * 120, dark = rnd() < .5;
+      const gr = g.createRadialGradient(x, y, 0, x, y, r);
+      gr.addColorStop(0, dark ? "rgba(120,120,116,.08)" : "rgba(255,255,255,.08)"); gr.addColorStop(1, "rgba(0,0,0,0)");
+      g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2);
+    }
+    for (let i = 0; i < 2200; i++) {                     // fine aggregate
+      const x = rnd() * N, y = rnd() * N, a = .05 + rnd() * .16;
+      g.fillStyle = rnd() < .6 ? `rgba(60,60,58,${a})` : `rgba(255,255,255,${a})`; g.fillRect(x, y, 1 + rnd() * 1.5, 1 + rnd() * 1.5);
+    }
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.encoding = THREE.sRGBEncoding; t.anisotropy = 4;
+    return t;
+  })();
   const mats = {
-    wall: new THREE.MeshStandardMaterial({ color: 0xe6e6e3, roughness: 1 }),
-    floor: new THREE.MeshStandardMaterial({ color: 0x8e8e8a, roughness: .85 }),
+    wall: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 }),
+    floor: new THREE.MeshStandardMaterial({ color: 0xffffff, map: concreteTex, roughness: .32, metalness: 0 }),
     ceil: new THREE.MeshStandardMaterial({ color: 0xf2f2f0, roughness: 1 }),
     frame: new THREE.MeshStandardMaterial({ color: 0x0b0b0b, roughness: .5 }),
     metal: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .4 }),
@@ -235,6 +255,7 @@ html, body { height: 100%; }
     dirty = true;
     doorMeshes.length = 0;
     const plane = (w, h, mat, pos, rot) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat); m.position.set(...pos); m.rotation.set(...rot); room.add(m); return m; };
+    concreteTex.repeat.set(W / 3, L / 3); mats.floor.needsUpdate = true;
     plane(W, L, mats.floor, [0, 0, 0], [-Math.PI / 2, 0, 0]);
     plane(W, L, mats.ceil, [0, HGT, 0], [Math.PI / 2, 0, 0]);
     plane(W, HGT, mats.wall, [0, HGT / 2, -L / 2], [0, 0, 0]);
