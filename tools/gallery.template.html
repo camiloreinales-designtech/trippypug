@@ -168,7 +168,7 @@ html, body { height: 100%; }
   if (!renderer || !window.THREE) { fallbackMode(); return startAll(); }
 
   let dirty = true;
-  const PR = Math.min(innerWidth < 800 ? 1.5 : 2, devicePixelRatio || 1); renderer.setPixelRatio(PR);
+  const PR = Math.min(1.5, devicePixelRatio || 1); renderer.setPixelRatio(PR);
   const ANISO = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   renderer.outputEncoding = THREE.sRGBEncoding;
   const scene = new THREE.Scene();
@@ -229,7 +229,7 @@ html, body { height: 100%; }
   })();
   const mats = {
     wall: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 }),
-    floor: new THREE.MeshPhysicalMaterial({ color: 0xaeaeac, map: concreteTex, roughness: .28, metalness: 0, clearcoat: .7, clearcoatRoughness: .12 }),
+    floor: new THREE.MeshStandardMaterial({ color: 0xaeaeac, map: concreteTex, roughness: .5, metalness: 0 }),
     ceil: new THREE.MeshStandardMaterial({ color: 0xf2f2f0, roughness: 1 }),
     frame: new THREE.MeshStandardMaterial({ color: 0x0b0b0b, roughness: .5 }),
     metal: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .4 }),
@@ -297,12 +297,12 @@ html, body { height: 100%; }
     box(.05, .04, L - 1.6, mats.rail, -W / 2 + 1.1, HGT - .02, 0);
     box(.05, .04, L - 1.6, mats.rail, W / 2 - 1.1, HGT - .02, 0);
     // lights: one per painting slot along each rail (no visible fixture models)
-    const kk = Math.max(3, Math.round(W / 3.4));
+    const kk = 2;   // fewer lights = much faster (every light is computed per pixel)
     const rails = [[0, -L / 2 + 1.1, W], [0, L / 2 - 1.1, W], [-W / 2 + 1.1, 0, L], [W / 2 - 1.1, 0, L]];
     rails.forEach(([cx, cz, len], ri) => {
       for (let j = 0; j < kk; j++) {
         const a = (j + .5) * (len / kk) - len / 2, x = ri < 2 ? a : cx, z = ri < 2 ? cz : a;
-        const pl = new THREE.PointLight(0xffffff, .32, 7.5, 1.4); pl.position.set(x, HGT - .3, z); room.add(pl);
+        const pl = new THREE.PointLight(0xffffff, .5, 12, 1); pl.position.set(x, HGT - .3, z); room.add(pl);
       }
     });
     // doorways
