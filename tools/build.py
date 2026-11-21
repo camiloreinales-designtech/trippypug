@@ -43,3 +43,34 @@ stub = ("<script>window.claude={use:async n=>n==='db'?{collection:()=>({orderBy:
         + json.dumps(docs, ensure_ascii=False).replace("</", "<\\/") + ".map(d=>({id:d.id,data:()=>d}))}),0)})})}:null};</script>")
 open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8").write(rd("tools/gallery.template.html").replace("<!--PAINTINGS_STUB-->", stub))
 print(f"built {len(P)} paintings")
+
+# One small page per painting at /p/<num>/ : the permanent address written to its NFC tag.
+SITE = "https://gallery.trippypug.com"
+ptpl = rd("tools/painting.template.html")
+rows = ["id,title,tag_url"]
+for p in P:
+    num = p["id"][1:]
+    url = f"{SITE}/p/{num}/"
+    e = lambda s: html.escape(str(s), quote=True)
+    q = lambda t: urllib.parse.quote(t, safe="")
+    detail = f'{p["year"]}, {p["medium"]}, {p["dimensions"]}'
+    mail = f'mailto:{MAIL}?subject={q("I want to buy: " + p["title"])}&amp;body={q(f"Hi! I am interested in \"{p["title"]}\" ({detail}). Is it available?")}'
+    if p.get("sold"):
+        price, buy = '<span class="sold">SOLD</span>', ""
+    else:
+        price = f'<span class="d">{e(p["price"])}</span>' if p.get("price") else ""
+        pay = f'<a class="pri" href="{e(p["pay"])}" target="_blank" rel="noopener">pay securely online</a>' if str(p.get("pay", "")).startswith("https://") else ""
+        buy = (f'<section class="buy" aria-label="Buy this painting"><h2>i want to buy it</h2><div class="btns">{pay}'
+               f'<a class="{"" if pay else "pri"}" href="{mail}">email trippypug</a>'
+               f'<a href="https://www.instagram.com/trippypug/" target="_blank" rel="noopener">message on Instagram</a></div>'
+               f'<p>If your email app does not open, write to <b>{MAIL}</b> with the painting\'s title.</p></section>')
+    full = f'images/full/p{num}.jpg'
+    out = (ptpl.replace("{{TITLE_ATTR}}", e(p["title"])).replace("{{TITLE}}", e(p["title"])).replace("{{YEAR}}", e(p["year"]))
+           .replace("{{MEDIUM}}", e(p["medium"])).replace("{{DIMS}}", e(p["dimensions"])).replace("{{ALT}}", e(p["alt"]))
+           .replace("{{URL}}", url).replace("{{IMG_ABS}}", f"{SITE}/{full}").replace("{{IMG_FULL}}", f"../../{full}{ver(full)}")
+           .replace("{{W}}", str(p["w"])).replace("{{H}}", str(p["h"])).replace("{{PRICE}}", price).replace("{{BUY}}", buy))
+    os.makedirs(os.path.join(ROOT, "p", num), exist_ok=True)
+    open(os.path.join(ROOT, "p", num, "index.html"), "w", encoding="utf-8").write(out)
+    rows.append(f'{p["id"]},"{p["title"].replace(chr(34), chr(34)*2)}",{url}')
+open(os.path.join(ROOT, "tools", "nfc-tags.csv"), "w", encoding="utf-8").write("\n".join(rows) + "\n")
+print(f"built {len(P)} painting pages in p/ and tools/nfc-tags.csv")
