@@ -1,0 +1,454 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Vortex Gallery – Trippy Pug</title><meta name="description" content="Walk the Trippy Pug vortex gallery: a looping white corridor of original paintings by trippypug. Scroll to walk, click a painting to see it up close."><link rel="canonical" href="https://gallery.trippypug.com/vortex.html"><meta property="og:type" content="website"><meta property="og:site_name" content="Trippy Pug"><meta property="og:url" content="https://gallery.trippypug.com/vortex.html"><meta property="og:title" content="Vortex Gallery – Trippy Pug"><meta property="og:description" content="Walk the Trippy Pug vortex gallery: a looping white corridor of original paintings by trippypug. Scroll to walk, click a painting to see it up close."><meta property="og:image" content="https://gallery.trippypug.com/images/full/p28.jpg"><meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;700&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap">
+<style>
+/* Layout: a full-bleed WebGL loop corridor under a quiet four-corner HUD; a painting opens as a two-column page on the same gallery white. */
+:root {
+  --paper: #f6f6f3;
+  --ink: #141413;
+  --muted: #6c6c67;
+  --line: #d8d8d2;
+  --card: #ffffff;
+  --sold: #d4343e;
+  --focus: #ff3b6b;
+  --display: "Archivo Narrow", "Helvetica Neue", "Arial Narrow", Arial, sans-serif;
+  --ui: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  color-scheme: light;
+}
+html, body { height: 100%; }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+body { background: var(--paper); color: var(--ink); font-family: var(--ui); overflow: hidden; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+#gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+#gl.dragging { cursor: grabbing; }
+
+.hud { position: fixed; z-index: 5; pointer-events: none; transition: opacity .35s ease; }
+.hud.away { opacity: 0; }
+.tl { top: calc(env(safe-area-inset-top, 0px) + 12px); left: max(16px, env(safe-area-inset-left, 0px)); }
+.tl img { width: clamp(92px, 12vw, 160px); display: block; }
+.tr { top: calc(env(safe-area-inset-top, 0px) + 18px); right: max(16px, env(safe-area-inset-right, 0px)); }
+.tr img { width: clamp(108px, 15vw, 200px); display: block; }
+.eyebrow { font: 700 10px/1 var(--ui); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.bl { bottom: calc(env(safe-area-inset-bottom, 0px) + 18px); left: max(16px, env(safe-area-inset-left, 0px)); display: flex; flex-direction: column; gap: 6px; font: 700 13px/1.2 var(--ui); }
+.links { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; font: 700 13px/1.2 var(--ui); }
+.links a, .tl a, .tr a { pointer-events: auto; color: var(--ink); text-decoration: none; display: block; }
+.links a:hover { text-decoration: underline; }
+.br { bottom: calc(env(safe-area-inset-bottom, 0px) + 18px); right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (max-width: 680px) {
+  .bl { font-size: 12px; }
+}
+
+/* shop view */
+.shop { position: fixed; inset: 0; z-index: 20; background: var(--paper); overflow-y: auto; opacity: 0; transition: opacity .45s ease; overscroll-behavior: contain; }
+.shop.show { opacity: 1; }
+.shop-bar { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 14px; padding-block: calc(env(safe-area-inset-top, 0px) + 10px) 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); background: var(--paper); border-bottom: 1px solid var(--line); }
+.logo-btn { background: none; border: 0; padding: 0; cursor: pointer; flex: none; }
+.logo-btn img { height: 42px; width: auto; display: block; }
+.crumb { flex: 1; min-width: 0; font: 700 10px/1 var(--ui); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pill { flex: none; font: 700 10px/1 var(--ui); letter-spacing: .16em; text-transform: uppercase; border: 1px solid var(--ink); background: var(--ink); color: var(--card); border-radius: 999px; padding: 10px 14px; cursor: pointer; }
+.shop-inner { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 40px calc(env(safe-area-inset-bottom, 0px) + 80px); }
+.prod { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 76px); align-items: start; }
+.pfig { margin: 0; position: sticky; top: 92px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+#pimg { display: block; width: min(100%, calc(72vh * var(--ar, 1))); height: auto; max-width: 100%; aspect-ratio: var(--ar, 1); object-fit: cover; background: var(--card); box-shadow: 0 22px 44px -26px rgba(20, 20, 19, .55); }
+.pcap { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; font: italic 400 14px/1.3 var(--serif); color: var(--muted); }
+.linkbtn { background: none; border: 0; padding: 0; cursor: pointer; font: 700 11px/1.3 var(--ui); letter-spacing: .12em; text-transform: uppercase; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.pinfo { min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.ptop { display: flex; flex-direction: column; gap: 10px; }
+#ptitle { font: 700 clamp(32px, 4.4vw, 58px)/.94 var(--display); text-transform: uppercase; letter-spacing: -.005em; margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
+.by { font: italic 400 18px/1.2 var(--serif); color: var(--muted); margin: 0; }
+.price { font: 700 22px/1.1 var(--ui); margin: 0; font-variant-numeric: tabular-nums; }
+.price.sold { color: var(--sold); }
+.facts { margin: 0; border-top: 1px solid var(--line); }
+.facts div { display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--line); }
+.facts dt { font: 700 10px/1.4 var(--ui); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: 0; font: 700 14px/1.4 var(--ui); text-align: right; min-width: 0; overflow-wrap: anywhere; }
+a.add { display: flex; align-items: center; justify-content: center; text-decoration: none; }
+.add { flex: 1; min-height: 50px; background: var(--ink); color: var(--card); border: 0; font: 700 12px/1 var(--ui); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
+.more { margin-top: 80px; display: flex; flex-direction: column; gap: 20px; }
+.more h2 { font: 700 clamp(24px, 2.8vw, 32px)/1 var(--display); text-transform: uppercase; margin: 0; }
+.mrow { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 22px; }
+.mcard { background: none; border: 0; padding: 0; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.mcard .th { aspect-ratio: 1; display: grid; place-items: center; background: var(--card); }
+.mcard img { max-width: 80%; max-height: 80%; display: block; box-shadow: 0 6px 14px -8px rgba(20, 20, 19, .5); }
+.mcard b { font: 700 12px/1.3 var(--ui); overflow-wrap: anywhere; }
+.mcard i { font: italic 400 13px/1 var(--serif); color: var(--muted); }
+@media (max-width: 760px) {
+  .prod { grid-template-columns: minmax(0, 1fr); }
+  .pfig { position: static; }
+  #pimg { width: min(100%, calc(56vh * var(--ar, 1))); }
+  .crumb { display: none; }
+  .shop-bar { justify-content: space-between; }
+}
+.fly { position: fixed; z-index: 30; pointer-events: none; object-fit: cover; margin: 0; box-shadow: 0 22px 44px -26px rgba(20, 20, 19, .55); }
+.nogl { position: fixed; inset: 0; display: grid; place-items: center; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); text-align: center; font: 700 15px/1.5 var(--ui); }
+@media (prefers-reduced-motion: reduce) { .shop { transition: none; } }
+</style></head><body>
+<canvas id="gl" tabindex="0" aria-label="Vortex gallery: a looping 3D corridor of paintings. Scroll or drag to walk, click a painting to open it. Arrow keys also walk."></canvas>
+<div class="hud tl"><a href="https://www.instagram.com/trippypug/" target="_blank" rel="noopener" aria-label="@trippypug on Instagram"><img src="images/logo.png" alt="Trippy Pug"></a></div>
+<div class="hud tr"><a href="https://www.instagram.com/trippypug/" target="_blank" rel="noopener" aria-label="@trippypug on Instagram"><img src="images/instagram.png" alt="@trippypug"></a></div>
+<div class="hud bl" id="hints"><span>scroll to walk</span><span>drag to look around</span><span>click a painting</span></div>
+<nav class="hud br links" aria-label="Other views"><a href="./">Main gallery</a><a href="simple.html">Painting list</a></nav>
+
+<div class="shop" id="shop" hidden role="dialog" aria-modal="true" aria-labelledby="ptitle">
+  <header class="shop-bar">
+    <button class="logo-btn" id="logoBack" type="button" aria-label="Back to the vortex gallery"><img src="images/logo.png" alt=""></button>
+    <div class="crumb" id="crumb"></div>
+    <button class="pill" id="back" type="button">Back to the vortex</button>
+  </header>
+  <div class="shop-inner">
+    <div class="prod">
+      <figure class="pfig">
+        <img id="pimg" alt="">
+        <figcaption class="pcap"><button class="linkbtn" id="viewWall" type="button">View on the wall</button><a class="linkbtn" id="pfull" href="#" target="_blank" rel="noopener">View full size</a></figcaption>
+      </figure>
+      <div class="pinfo">
+        <div class="ptop">
+          <div class="eyebrow" id="peye"></div>
+          <h1 id="ptitle"></h1>
+          <p class="by" id="pby"></p>
+        </div>
+        <p class="price" id="pstatus"></p>
+        <dl class="facts"><div><dt>Medium</dt><dd id="dMed"></dd></div><div><dt>Size</dt><dd id="dSize"></dd></div><div><dt>Year</dt><dd id="dYear"></dd></div></dl>
+        <a class="add" id="pbuy" href="#">i want to buy it</a>
+      </div>
+    </div>
+    <section class="more"><h2 id="moreT"></h2><div class="mrow" id="more"></div></section>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const DATA = [{"id": "p26", "title": "Vacas en central park", "year": "2021", "medium": "Acrylic on canvas", "dimensions": "30\" × 26\"", "price": "", "sold": true, "w": 760, "h": 574, "alt": "A giant skeleton cow stands among Manhattan skyscrapers at dusk above Central Park's green hills and pond, while two small skeletons sit by the water at the lower right.", "thumb": "images/p26.jpg?v=68ec1c96", "full": "images/full/p26.jpg?v=5c850f23"}, {"id": "p06", "title": "Can’t Waste No Time, She Might Leave Soon", "year": "2022", "medium": "Acrylic on canvas", "dimensions": "40\" × 30\"", "price": "", "sold": false, "w": 587, "h": 760, "alt": "A long-haired woman sits cross-legged by a lake and mountains, embraced from behind by a skeleton.", "thumb": "images/p06.jpg?v=9e65f09e", "full": "images/full/p06.jpg?v=47af72f8"}, {"id": "p08", "title": "La Patrona de Brooklyn", "year": "2022", "medium": "Acrylic on canvas", "dimensions": "28\" × 23\"", "price": "", "sold": true, "w": 588, "h": 760, "alt": "A blond-haired woman with gold jewelry sits wrapped in a checkered shawl in a bar draped with a Puerto Rican flag, with green figures behind her.", "thumb": "images/p08.jpg?v=9c8ac278", "full": "images/full/p08.jpg?v=14970de3"}, {"id": "p14", "title": "Dragonrider", "year": "2022", "medium": "Acrylic on canvas", "dimensions": "30\" × 26\"", "price": "", "sold": true, "w": 760, "h": 570, "alt": "A skeleton in a dark jacket does a handstand beside a large horned skeleton beast, against a red panel marked 424, blue walls and an orange floor.", "thumb": "images/p14.jpg?v=f943af43", "full": "images/full/p14.jpg?v=e7704175"}, {"id": "p24", "title": "la perdición", "year": "2022", "medium": "Acrylic on canvas", "dimensions": "40\" × 30\"", "price": "", "sold": true, "w": 554, "h": 760, "alt": "A crowd of skeletons gathers on an orange and red floor beneath a swirling turquoise sky, with a skeleton inside a glowing yellow sun, winged skeletons flying, and stacked skulls on both sides.", "thumb": "images/p24.jpg?v=2fa96732", "full": "images/full/p24.jpg?v=70dbf8ba"}, {"id": "p25", "title": "next week is the fries", "year": "2022", "medium": "Acrylic on canvas", "dimensions": "30\" × 26\"", "price": "", "sold": true, "w": 566, "h": 760, "alt": "A figure in a red hood, grey bomber jacket, patterned jeans and black boots walks across a bright green tiled floor past a red table stacked with burger boxes, under a cloudy turquoise sky and a rope-netted dome.", "thumb": "images/p25.jpg?v=8511ee29", "full": "images/full/p25.jpg?v=0ed5145e"}, {"id": "p01", "title": "Las Verandas de Brooklyn", "year": "2023", "medium": "Acrylic on canvas", "dimensions": "36\" × 28\"", "price": "", "sold": true, "w": 588, "h": 760, "alt": "A skeleton lies on a white-sheeted bed in a dark room. Light from an open shuttered window falls across the floor, and sunflowers wind along the skeleton.", "thumb": "images/p01.jpg?v=788febec", "full": "images/full/p01.jpg?v=e931c52e"}, {"id": "p05", "title": "Atardecer con una Diosa", "year": "2023", "medium": "Acrylic on canvas", "dimensions": "24\" × 36\"", "price": "", "sold": true, "w": 760, "h": 507, "alt": "A giant green eye hangs over a sparkling sea. A blue bull-headed figure in a robe sits at a red-and-white checkered picnic with bones.", "thumb": "images/p05.jpg?v=6cc27871", "full": "images/full/p05.jpg?v=362f9d93"}, {"id": "p07", "title": "Ballet en el Amazonas", "year": "2023", "medium": "Acrylic on canvas", "dimensions": "24\" × 36\"", "price": "", "sold": true, "w": 760, "h": 503, "alt": "A troupe of skeletons in dark red tutus and red ballet shoes dance on a black-and-white checkered floor framed by sunflowers and vines.", "thumb": "images/p07.jpg?v=2552d0f7", "full": "images/full/p07.jpg?v=5439ec7b"}, {"id": "p11", "title": "Anti-Auto Retrato en Cartagena", "year": "2023", "medium": "Acrylic on canvas", "dimensions": "24\" × 36\"", "price": "$2,500 USD", "sold": true, "w": 587, "h": 760, "alt": "A large green skull and skeleton in front of colonial yellow and orange buildings and a clock tower, with small skeletons at tables.", "thumb": "images/p11.jpg?v=275ffe05", "full": "images/full/p11.jpg?v=5d71ccf4"}, {"id": "p02", "title": "La Madona del’ Carmen", "year": "2024", "medium": "Acrylic on canvas", "dimensions": "30\" × 24\"", "price": "", "sold": true, "w": 608, "h": 760, "alt": "A haloed woman in a blue cloak holds a small yellow skeleton child. A church clock tower rises behind them against a blue sky.", "thumb": "images/p02.jpg?v=4e5c9d5f", "full": "images/full/p02.jpg?v=0f5e12f6"}, {"id": "p03", "title": "Nuestra Historia", "year": "2024", "medium": "Acrylic on canvas", "dimensions": "30\" × 24\"", "price": "", "sold": false, "w": 589, "h": 760, "alt": "Two olive-green skulls face each other under a night sky of planets and eyes, above a green field and a ribcage.", "thumb": "images/p03.jpg?v=3cdd6e67", "full": "images/full/p03.jpg?v=dd636557"}, {"id": "p04", "title": "El Alakran y las Flores", "year": "2024", "medium": "Acrylic on canvas", "dimensions": "30\" × 36\"", "price": "", "sold": false, "w": 760, "h": 613, "alt": "A skeleton goalkeeper dives to stop a flaming soccer ball inside a goal, with a stadium crowd made of flowers behind.", "thumb": "images/p04.jpg?v=a5518069", "full": "images/full/p04.jpg?v=c14e4134"}, {"id": "p09", "title": "La Reina de Williasmburg", "year": "2024", "medium": "Acrylic on canvas", "dimensions": "40\" × 30\"", "price": "", "sold": true, "w": 589, "h": 760, "alt": "A woman with curly blond hair and bright rings wears a Puerto Rican flag cape in front of a stylized city skyline and bridge.", "thumb": "images/p09.jpg?v=e91f0f13", "full": "images/full/p09.jpg?v=77b15e5d"}, {"id": "p10", "title": "El Hermano de la Monalisa", "year": "2024", "medium": "Acrylic on canvas", "dimensions": "30\" × 40\"", "price": "", "sold": false, "w": 612, "h": 760, "alt": "A man in colorful sunglasses and a skeletal jaw wears a checkered monogram shirt and a chain, posed like the Mona Lisa before a landscape.", "thumb": "images/p10.jpg?v=e0b18e46", "full": "images/full/p10.jpg?v=a8e67507"}, {"id": "p18", "title": "pensando en la penumbra", "year": "2024", "medium": "Acrylic on canvas", "dimensions": "40\" × 30\"", "price": "", "sold": true, "w": 760, "h": 574, "alt": "Two black skeletons sit with their backs to us in front of two tall barred windows, looking out at a blue sky fading to an orange sunset, with white light streaks across a dark grey wall.", "thumb": "images/p18.jpg?v=ab3699c5", "full": "images/full/p18.jpg?v=a9e919f2"}, {"id": "p23", "title": "Data", "year": "2024", "medium": "Acrylic on canvas", "dimensions": "36\" × 24\"", "price": "", "sold": true, "w": 760, "h": 486, "alt": "A skull with a pink bob haircut and wide staring eyes, wired up with bundles of colorful cables that arc across a dark grey and blue background.", "thumb": "images/p23.jpg?v=05af58a1", "full": "images/full/p23.jpg?v=699e59ec"}, {"id": "p27", "title": "el show de angelo colina", "year": "2024", "medium": "Acrylic on canvas", "dimensions": "40\" × 40\"", "price": "", "sold": true, "w": 728, "h": 760, "alt": "A standing skeleton holds a microphone on a stand like a stand-up comedian in front of a bright green wall, facing three giant skulls in the foreground over a black and white checkered floor.", "thumb": "images/p27.jpg?v=5b3f9676", "full": "images/full/p27.jpg?v=ea30bfa3"}, {"id": "p13", "title": "LUX", "year": "2025", "medium": "Acrylic on canvas", "dimensions": "40\" × 40\"", "price": "", "sold": false, "w": 760, "h": 755, "alt": "A skeleton wrapped in a white hood, its head tilted and arms crossed over its ribs, glows against a deep turquoise and blue spray-painted background with paint drips.", "thumb": "images/p13.jpg?v=4e8b13cb", "full": "images/full/p13.jpg?v=026486ba"}, {"id": "p16", "title": "Swedgar", "year": "2025", "medium": "Acrylic on canvas", "dimensions": "36\" × 36\"", "price": "", "sold": false, "w": 739, "h": 760, "alt": "A cartoon squid character with a mop of black hair and red-rimmed eyes, drawn in a spray-painted turquoise scene with rippled vertical lines, white squiggles, a small skeleton, a QR code and the words Squedgar Calamardo and Trippypug.", "thumb": "images/p16.jpg?v=0c2ab28f", "full": "images/full/p16.jpg?v=775de53f"}, {"id": "p17", "title": "T(hee-hee)hriller", "year": "2025", "medium": "Acrylic on canvas", "dimensions": "40\" × 27\"", "price": "", "sold": false, "w": 760, "h": 507, "alt": "A troupe of dancing skeletons in a synchronized zombie-dance pose, the lead in a red jacket, against a glowing blue and white cloudy sky and a dark stage floor with long shadows.", "thumb": "images/p17.jpg?v=33f55821", "full": "images/full/p17.jpg?v=1c69caf3"}, {"id": "p19", "title": "Los 3", "year": "2025", "medium": "Acrylic on canvas", "dimensions": "60\" × 40\"", "price": "", "sold": false, "w": 457, "h": 760, "alt": "Three skeletons with red muscle-colored limbs tumble together in a spider web, one upside down, above a blue and white checkered floor with two blue orbs and a pug-faced drum, under a purple sky with a pale moon.", "thumb": "images/p19.jpg?v=ccaadae7", "full": "images/full/p19.jpg?v=28a038d6"}, {"id": "p20", "title": "lucho y brazil", "year": "2025", "medium": "Acrylic on canvas", "dimensions": "24\" × 18\"", "price": "", "sold": false, "w": 760, "h": 616, "alt": "Skeleton soccer players on a green field with white boundary lines, one diving in the air toward a flaming soccer ball, while others run and a skull peeks up at the bottom.", "thumb": "images/p20.jpg?v=236ce969", "full": "images/full/p20.jpg?v=43c32754"}, {"id": "p21", "title": "Love club", "year": "2025", "medium": "Acrylic on canvas", "dimensions": "40\" × 26\"", "price": "", "sold": true, "w": 760, "h": 496, "alt": "A winged skeleton horse flies above a red and white striped wall, with green vines hanging from a yellow band, a grinning mouth with watching eyes in the middle, and a field of pink and yellow flowers below.", "thumb": "images/p21.jpg?v=aa7808d2", "full": "images/full/p21.jpg?v=8251e61d"}, {"id": "p22", "title": "chromacopia", "year": "2025", "medium": "Acrylic on canvas", "dimensions": "12\" × 12\"", "price": "", "sold": false, "w": 652, "h": 760, "alt": "A thickly painted black, white and pale yellow portrait of a figure with two round hair buns, a pale halo behind the head, and a skeletal hand raised at the left.", "thumb": "images/p22.jpg?v=25f3ab6c", "full": "images/full/p22.jpg?v=946ff123"}, {"id": "p12", "title": "Omerta", "year": "2026", "medium": "Acrylic on canvas", "dimensions": "40\" × 26\"", "price": "", "sold": true, "w": 760, "h": 502, "alt": "Two skeletons in 1940s-style gangster clothes, one in a white fedora, tan overcoat and red tie, the other in sunglasses and a red fur-trimmed coat, stand on a Brooklyn street in front of a red brick building under a stormy grey sky.", "thumb": "images/p12.jpg?v=21b6cae2", "full": "images/full/p12.jpg?v=31f5662e"}, {"id": "p15", "title": "Marrrrcria", "year": "2026", "medium": "Acrylic on canvas", "dimensions": "20\" × 20\"", "price": "", "sold": false, "w": 760, "h": 760, "alt": "A small curled-up skeleton with dark curly hair rests its chin on its hand, floating in the middle of a large pale blue and white brushed background.", "thumb": "images/p15.jpg?v=03be34db", "full": "images/full/p15.jpg?v=577f9364"}, {"id": "p28", "title": "tension", "year": "2026", "medium": "Acrylic on canvas", "dimensions": "24\" × 36\"", "price": "", "sold": false, "w": 760, "h": 502, "alt": "Two skeletons lounge on rumpled white sheets against a black background: one in a red top with pearl strands and a charm necklace, the other in a teal top with a sun pendant, holding a pencil over a blank page, with drumsticks at the bottom.", "thumb": "images/p28.jpg?v=1afe28c4", "full": "images/full/p28.jpg?v=216e4b36"}, {"id": "p29", "title": "You died for 3 seconds on the J Train, lock in", "year": "2026", "medium": "Acrylic on canvas", "dimensions": "24\"x36\"", "price": "", "sold": false, "w": 760, "h": 523, "alt": "Acrylic painting of a crowd of grinning skeletons in grey, black and yellow, with a circled J and the words FIFA World Cup 2026 scrawled in pencil", "thumb": "images/p29.jpg?v=64351815", "full": "images/full/p29.jpg?v=c6dc3d6a"}];
+  const IN = 0.0254, CW = 4.5, HW = CW / 2, CH = 3.7, EYE = 1.6, ART_Y = 1.58, D = 1.25 * IN;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const ss = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+
+  function dimsIn(p) {
+    const m = String(p.dimensions || "").match(/(\d+(?:\.\d+)?)\D+?(\d+(?:\.\d+)?)/);
+    const a = m ? +m[1] : 30, b = m ? +m[2] : 24;
+    return [Math.max(a, b), Math.min(a, b)];
+  }
+  const isLand = p => (p.w || 1) >= (p.h || 1);
+  function realWH(p) { const [L, S] = dimsIn(p); return isLand(p) ? [L, S] : [S, L]; }
+
+  // ---------- collections: one per year, newest first; a lone oldest year joins the next ----------
+  const years = [...new Set(DATA.map(p => p.year))].sort((a, b) => b - a);
+  const groups = years.map(y => ({ years: [y], items: DATA.filter(p => p.year === y).reverse() }));
+  while (groups.length > 1 && groups[groups.length - 1].items.length < 2) {
+    const last = groups.pop(), prev = groups[groups.length - 1];
+    prev.items = prev.items.concat(last.items); prev.years.push(...last.years);
+  }
+  groups.forEach(g => { g.title = g.years.length > 1 ? g.years[g.years.length - 1] + "–" + g.years[0] : g.years[0]; });
+
+  // ---------- positions along the corridor: newest first, alternating walls ----------
+  const items = []; let s = 0, side = 1;
+  groups.forEach(g => g.items.forEach(p => {
+    const [wi, hi] = realWH(p);
+    const it = { kind: "art", p, g, s, side, w: wi * IN, h: hi * IN };
+    items.push(it); g.arts = (g.arts || []).concat(it);
+    side = -side; s += Math.max(2.1, it.w * .6 + 1.2);
+  }));
+  const LEN = s + (items.length % 2 ? 1.2 : 0);   // the last painting hangs just before the first one again
+
+  // ---------- a closed loop: a wobbly oval, resampled so distance along it is in metres ----------
+  const DENSE = 4000, ux = new Float64Array(DENSE + 1), uz = new Float64Array(DENSE + 1), cum = new Float64Array(DENSE + 1);
+  for (let k = 0; k <= DENSE; k++) {
+    const f = k / DENSE * Math.PI * 2 + Math.PI / 2, r = 1 + .10 * Math.cos(2 * f) + .03 * Math.sin(3 * f + .7);   // start on a long, gentle side
+    ux[k] = r * Math.cos(f); uz[k] = -r * Math.sin(f);
+    if (k) cum[k] = cum[k - 1] + Math.hypot(ux[k] - ux[k - 1], uz[k] - uz[k - 1]);
+  }
+  const SC = LEN / cum[DENSE], NP = Math.round(LEN / .25), DS = LEN / NP;
+  const PX = new Float32Array(NP), PZ = new Float32Array(NP), TX = new Float32Array(NP), TZ = new Float32Array(NP);
+  for (let i = 0, k = 0; i < NP; i++) {
+    const want = i * DS / SC; while (k < DENSE - 1 && cum[k + 1] < want) k++;
+    const t = (want - cum[k]) / ((cum[k + 1] - cum[k]) || 1);
+    PX[i] = (ux[k] + (ux[k + 1] - ux[k]) * t) * SC; PZ[i] = (uz[k] + (uz[k + 1] - uz[k]) * t) * SC;
+  }
+  for (let i = 0; i < NP; i++) {
+    const a = (i + 1) % NP, b = (i - 1 + NP) % NP, tx = PX[a] - PX[b], tz = PZ[a] - PZ[b], l = Math.hypot(tx, tz);
+    TX[i] = tx / l; TZ[i] = tz / l;
+  }
+  const wrap = q => ((q % LEN) + LEN) % LEN;
+  const wrapDiff = (a, b) => { const d = wrap(a - b); return d > LEN / 2 ? d - LEN : d; };
+  function at(q) {
+    const f = wrap(q) / DS, i = Math.floor(f) % NP, j = (i + 1) % NP, k = f - Math.floor(f);
+    let tx = TX[i] + (TX[j] - TX[i]) * k, tz = TZ[i] + (TZ[j] - TZ[i]) * k; const l = Math.hypot(tx, tz); tx /= l; tz /= l;
+    return { x: PX[i] + (PX[j] - PX[i]) * k, z: PZ[i] + (PZ[j] - PZ[i]) * k, tx, tz, rx: -tz, rz: tx };
+  }
+
+  // ---------- renderer ----------
+  const canvas = $("gl");
+  let renderer = null;
+  try { if (window.THREE) renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: "high-performance" }); } catch (e) { renderer = null; }
+  if (!renderer) {
+    const d = document.createElement("div"); d.className = "nogl";
+    d.textContent = "This browser can't show the 3D gallery. Try a recent Chrome, Safari or Firefox.";
+    document.body.appendChild(d); return;
+  }
+  renderer.setPixelRatio(Math.min(1.5, devicePixelRatio || 1));
+  const ANISO = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  const scene = new THREE.Scene(), FOG = 0xf1f1ee;
+  scene.background = new THREE.Color(FOG); scene.fog = new THREE.Fog(FOG, 9, 42);
+  const cam = new THREE.PerspectiveCamera(58, 1, .05, 90), tmp = new THREE.PerspectiveCamera(58, 1, .05, 90);
+  function resize() {
+    const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false);
+    const f = w / h < 1 ? 78 : 64; cam.fov = tmp.fov = f; cam.aspect = tmp.aspect = w / h; cam.updateProjectionMatrix(); tmp.updateProjectionMatrix();
+  }
+  addEventListener("resize", resize); resize();
+
+  let tunnel = null;
+  // ---------- the seamless white tunnel: one mesh, baked soft shading, no lights ----------
+  const prof = [];
+  {
+    const r = .75, R = 1.15;
+    const line = (u0, v0, u1, v1, n) => { for (let k = 0; k < n; k++) prof.push([u0 + (u1 - u0) * k / n, v0 + (v1 - v0) * k / n]); };
+    const arc = (cu, cv, rad, a0, a1, n) => { for (let k = 0; k < n; k++) { const a = a0 + (a1 - a0) * k / n; prof.push([cu + rad * Math.cos(a), cv + rad * Math.sin(a)]); } };
+    line(-HW + r, 0, HW - r, 0, 16);
+    arc(HW - r, r, r, -Math.PI / 2, 0, 10);
+    line(HW, r, HW, CH - R, 8);
+    arc(HW - R, CH - R, R, 0, Math.PI / 2, 10);
+    line(HW - R, CH, -HW + R, CH, 12);
+    arc(-HW + R, CH - R, R, Math.PI / 2, Math.PI, 10);
+    line(-HW, CH - R, -HW, r, 8);
+    arc(-HW + r, r, r, Math.PI, Math.PI * 1.5, 10);
+    prof.push(prof[0].slice());
+    const fe = HW - r;
+    prof.forEach(pt => {
+      const [u, v] = pt; let c;
+      if (v < 1e-4) { const q = u / fe; c = .86 + .03 * Math.max(0, 1 - q * q); }
+      else { c = .86 + .14 * ss(0, 1.5, v); if (v > CH - 1.3) c -= .05 * ss(CH - 1.3, CH, v); }
+      pt.push(c);
+    });
+  }
+  {
+    const ns = Math.round(LEN / .5), step = LEN / ns, np = prof.length;
+    const pos = new Float32Array(ns * np * 3), col = new Float32Array(ns * np * 3), idx = [];
+    for (let i = 0; i < ns; i++) {
+      const a = at(i * step);
+      for (let j = 0; j < np; j++) {
+        const [u, v, c] = prof[j], o = (i * np + j) * 3;
+        pos[o] = a.x + a.rx * u; pos[o + 1] = v; pos[o + 2] = a.z + a.rz * u;
+        const wf = Math.abs(u) > HW - .8 && v > .2 ? ss(HW - .8, HW, Math.abs(u)) : 0, sg = u < 0 ? -1 : 1;
+        const cc = c * (1 - wf * .035 * (1 + (a.rx * sg * .55 - a.rz * sg * .83)));
+        col[o] = cc; col[o + 1] = cc * .998; col[o + 2] = cc * .99;
+      }
+    }
+    for (let i = 0; i < ns; i++) for (let j = 0; j < np - 1; j++) { const a = i * np + j, b = ((i + 1) % ns) * np + j; idx.push(a, b, a + 1, b, b + 1, a + 1); }   // last ring joins the first: a closed loop
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
+    geo.setIndex(idx);
+    tunnel = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide })); scene.add(tunnel);
+  }
+
+  // ---------- canvas helpers ----------
+  function softShadowTex() {
+    const c = document.createElement("canvas"); c.width = c.height = 128; const x = c.getContext("2d");
+    for (let k = 0; k < 18; k++) { x.fillStyle = "rgba(0,0,0,.055)"; const m = k * 3.2; x.fillRect(m, m, 128 - 2 * m, 128 - 2 * m); }
+    return new THREE.CanvasTexture(c);
+  }
+  const SHADOW = softShadowTex();
+  function wrapLines(x, text, maxW, maxLines) {
+    const words = String(text).split(/\s+/), lines = []; let cur = "";
+    for (const w of words) { const t = cur ? cur + " " + w : w; if (x.measureText(t).width > maxW && cur) { lines.push(cur); cur = w; } else cur = t; }
+    if (cur) lines.push(cur);
+    if (lines.length > maxLines) { lines.length = maxLines; lines[maxLines - 1] = lines[maxLines - 1].replace(/\s*\S*$/, "") + "…"; }
+    return lines;
+  }
+  function captionTex(p) {
+    const c = document.createElement("canvas"); c.width = 640; c.height = 280; const x = c.getContext("2d");
+    x.fillStyle = "#151514"; x.font = "italic 400 46px Newsreader, Georgia, serif"; x.textBaseline = "top";
+    const tl = wrapLines(x, p.title, 620, 2); let y = 6; tl.forEach(l => { x.fillText(l, 0, y); y += 52; });
+    y += 8; x.font = "700 26px 'Helvetica Neue', Helvetica, Arial, sans-serif"; x.fillStyle = "#6c6c67";
+    const [a, b] = realWH(p);
+    x.fillText(p.year + " · " + p.medium, 0, y); y += 36; x.fillText(a + "″ × " + b + "″", 0, y); y += 40;
+    x.fillStyle = p.sold ? "#d4343e" : "#151514"; x.beginPath(); x.arc(10, y + 12, 9, 0, 7); x.fill();
+    x.fillStyle = "#151514"; x.fillText(p.sold ? "Sold" : (p.price || "Available"), 30, y);
+    const t = new THREE.CanvasTexture(c); t.anisotropy = ANISO; return t;
+  }
+  // ---------- paintings ----------
+  const loader = new THREE.TextureLoader(), hitList = [];
+  const edgeMat = new THREE.MeshBasicMaterial({ color: 0xefede6 }), backMat = new THREE.MeshBasicMaterial({ color: 0x3a3a3a });
+  items.forEach(it => {
+    const a = at(it.s), sx = it.side, wallU = HW - .05;
+    const gx = a.x + a.rx * sx * wallU, gz = a.z + a.rz * sx * wallU, nx = -a.rx * sx, nz = -a.rz * sx;
+    const g = new THREE.Group(); g.position.set(gx, it.kind === "art" ? ART_Y : 1.66, gz); g.rotation.y = Math.atan2(nx, nz); scene.add(g);
+    it.group = g; it.normal = new THREE.Vector3(nx, 0, nz); it.right = new THREE.Vector3(nz, 0, -nx);
+    if (it.kind === "art") {
+      const front = new THREE.MeshBasicMaterial({ color: 0xdedede });
+      const box = new THREE.Mesh(new THREE.BoxGeometry(it.w, it.h, D), [edgeMat, edgeMat, edgeMat, edgeMat, front, backMat]);
+      box.position.z = D / 2; box.userData.item = it; g.add(box); hitList.push(box);
+      const sh = new THREE.Mesh(new THREE.PlaneGeometry(it.w + .16, it.h + .16), new THREE.MeshBasicMaterial({ map: SHADOW, transparent: true, opacity: .32, depthWrite: false }));
+      sh.position.set(.012, -.03, .001); g.add(sh);
+      it.center = new THREE.Vector3(gx + nx * D, ART_Y, gz + nz * D);
+      loader.load(it.p.thumb, t => { t.anisotropy = ANISO; front.map = t; front.color.set(0xffffff); front.needsUpdate = true; });
+    }
+  });
+  function addLabels() {
+    items.forEach(it => {
+      if (it.kind === "art") {
+        const cw = .32, chh = .14, m = new THREE.Mesh(new THREE.PlaneGeometry(cw, chh), new THREE.MeshBasicMaterial({ map: captionTex(it.p), transparent: true, depthWrite: false }));
+        m.position.set(it.w / 2 + .1 + cw / 2, -it.h / 2 + chh / 2, .004); it.group.add(m);
+      }
+    });
+  }
+  const fontsReady = document.fonts ? Promise.all([
+    document.fonts.load("700 100px 'Archivo Narrow'"), document.fonts.load("italic 400 40px Newsreader")
+  ]).catch(() => {}) : Promise.resolve();
+  Promise.race([fontsReady, new Promise(r => setTimeout(r, 2500))]).then(addLabels);
+  // ---------- movement: scroll or drag to glide along the loop, drag sideways to look around ----------
+  let mode = "walk", sCur = -2.6, sT = -.6, look = 0, lookT = 0, hov = 0, tw = null, current = null;
+  function walkPose(q, yaw, o) {
+    const a = at(q), b = at(q + 4.5), base = Math.atan2(b.x - a.x, b.z - a.z), ang = base + yaw;
+    o.position.set(a.x, EYE, a.z); o.lookAt(a.x + Math.sin(ang) * 5, EYE - .06, a.z + Math.cos(ang) * 5);
+  }
+  function zoomPose(it, o) {
+    const tanH = Math.tan(cam.fov * Math.PI / 360), asp = cam.aspect, phone = innerWidth < 760;
+    const fh = phone ? .40 : .62, fw = phone ? .78 : .46;
+    const d = clamp(Math.max(it.h / (2 * tanH * fh), it.w / (2 * tanH * asp * fw)), .6, CW - .5);
+    o.position.copy(it.center).addScaledVector(it.normal, d); o.position.y = it.center.y; o.lookAt(it.center);
+  }
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  function tweenTo(o, dur, done) { tw = { t: 0, dur: reduce ? .001 : dur, p0: cam.position.clone(), q0: cam.quaternion.clone(), p1: o.position.clone(), q1: o.quaternion.clone(), done }; }
+
+  let drag = null;
+  canvas.addEventListener("pointerdown", e => {
+    if (mode !== "walk") return;
+    drag = { x: e.clientX, y: e.clientY, x0: e.clientX, y0: e.clientY, moved: 0 }; canvas.setPointerCapture(e.pointerId); canvas.classList.add("dragging");
+  });
+  canvas.addEventListener("pointermove", e => {
+    if (drag) {
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.x = e.clientX; drag.y = e.clientY;
+      drag.moved = Math.max(drag.moved, Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0));
+      lookT = clamp(lookT + dx * .004, -1.3, 1.3); sT += dy * .02;
+    } else if (e.pointerType === "mouse" && mode === "walk") {
+      hov = -(e.clientX / innerWidth - .5) * .22;
+      canvas.style.cursor = pick(e.clientX, e.clientY) ? "pointer" : "";
+    }
+  });
+  canvas.addEventListener("pointerup", e => {
+    if (!drag) return; const moved = drag.moved; drag = null; canvas.classList.remove("dragging");
+    if (moved < 6 && mode === "walk") { const it = pick(e.clientX, e.clientY); if (it) zoomTo(it); }
+  });
+  canvas.addEventListener("pointercancel", () => { drag = null; canvas.classList.remove("dragging"); });
+  canvas.addEventListener("wheel", e => { e.preventDefault(); if (mode !== "walk") return; const k = e.deltaMode === 1 ? 16 : 1; sT += e.deltaY * k * .006; }, { passive: false });
+  addEventListener("keydown", e => {
+    if (!$("shop").hidden) { if (e.key === "Escape") closeShop(); return; }
+    if (mode !== "walk") return;
+    const k = e.key.toLowerCase();
+    if (k === "arrowup" || k === "w") sT += 2.2;
+    else if (k === "arrowdown" || k === "s") sT -= 2.2;
+    else if (k === "arrowleft" || k === "a") lookT = clamp(lookT + .3, -1.3, 1.3);
+    else if (k === "arrowright" || k === "d") lookT = clamp(lookT - .3, -1.3, 1.3);
+    else return;
+    e.preventDefault();
+  });
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  function pick(cx, cy) {
+    ndc.set(cx / innerWidth * 2 - 1, -(cy / innerHeight) * 2 + 1); ray.setFromCamera(ndc, cam);
+    const h = ray.intersectObjects(hitList, false)[0]; return h && h.distance < 16 ? h.object.userData.item : null;
+  }
+  function zoomTo(it) {
+    mode = "zoom"; current = it; document.querySelectorAll(".hud").forEach(h => h.classList.add("away")); canvas.style.cursor = "";
+    zoomPose(it, tmp); tweenTo(tmp, 1.15, () => openShop(it, true));
+  }
+  function projRect(it) {
+    const v = new THREE.Vector3(); let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (const sx of [-1, 1]) for (const sy of [-1, 1]) {
+      v.copy(it.center).addScaledVector(it.right, sx * it.w / 2); v.y += sy * it.h / 2; v.project(cam);
+      const X = (v.x + 1) / 2 * innerWidth, Y = (1 - v.y) / 2 * innerHeight;
+      x0 = Math.min(x0, X); x1 = Math.max(x1, X); y0 = Math.min(y0, Y); y1 = Math.max(y1, Y);
+    }
+    return { left: x0, top: y0, width: x1 - x0, height: y1 - y0 };
+  }
+
+  // ---------- painting view ----------
+  const shop = $("shop"), pimg = $("pimg");
+  const MAIL = "trippypuginfo@gmail.com";
+  function renderMore(it) {
+    let list = it.g.arts.filter(x => x !== it);
+    if (list.length < 3) list = list.concat(items.filter(x => x !== it && !list.includes(x)).slice(0, 6 - list.length));
+    $("moreT").textContent = list.every(x => x.g === it.g) ? "More from " + it.g.title : "More paintings";
+    $("more").replaceChildren(...list.slice(0, 8).map(x => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "mcard";
+      const th = document.createElement("span"); th.className = "th"; const im = document.createElement("img"); im.alt = ""; im.loading = "lazy"; im.src = x.p.thumb; th.appendChild(im);
+      const t = document.createElement("b"); t.textContent = x.p.title; const y = document.createElement("i"); y.textContent = x.p.year + (x.p.sold ? " · sold" : "");
+      b.append(th, t, y); b.addEventListener("click", () => { fillShop(x); zoomPose(x, cam); shop.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); }); return b;
+    }));
+  }
+  function fillShop(it) {
+    current = it; const p = it.p;
+    $("crumb").textContent = "Vortex gallery  /  " + p.title;
+    $("peye").textContent = p.year;
+    $("ptitle").textContent = p.title;
+    $("pby").textContent = "Trippy Pug";
+    pimg.style.setProperty("--ar", (p.w / p.h).toFixed(4)); pimg.alt = p.alt || p.title; pimg.src = p.thumb;
+    const full = new Image(); full.onload = () => { if (current === it) pimg.src = full.src; }; full.src = p.full;
+    $("pfull").href = p.full;
+    $("dMed").textContent = p.medium; $("dSize").textContent = p.dimensions; $("dYear").textContent = p.year;
+    const st = $("pstatus"); st.textContent = p.sold ? "Sold" : (p.price || "Available"); st.classList.toggle("sold", !!p.sold);
+    const buy = $("pbuy"); buy.hidden = !!p.sold;
+    if (!p.sold) {
+      const detail = p.year + ", " + p.medium + ", " + p.dimensions;
+      buy.href = "mailto:" + MAIL + "?subject=" + encodeURIComponent("I want to buy: " + p.title) + "&body=" + encodeURIComponent("Hi! I'm interested in \"" + p.title + "\" (" + detail + "). Is it available?");
+    }
+    renderMore(it);
+  }
+  function openShop(it, animate) {
+    const from = projRect(it);
+    fillShop(it); shop.hidden = false; shop.scrollTop = 0;
+    const to = pimg.getBoundingClientRect();
+    if (animate && !reduce && from.width > 4) {
+      const fly = document.createElement("img"); fly.className = "fly"; fly.src = it.p.thumb; fly.alt = "";
+      Object.assign(fly.style, { left: from.left + "px", top: from.top + "px", width: from.width + "px", height: from.height + "px" });
+      document.body.appendChild(fly); pimg.style.visibility = "hidden";
+      requestAnimationFrame(() => shop.classList.add("show"));
+      fly.animate([
+        { left: from.left + "px", top: from.top + "px", width: from.width + "px", height: from.height + "px" },
+        { left: to.left + "px", top: to.top + "px", width: to.width + "px", height: to.height + "px" }
+      ], { duration: 700, easing: "cubic-bezier(.2,.7,.2,1)", fill: "forwards" }).finished.then(() => { pimg.style.visibility = ""; fly.remove(); });
+    } else { requestAnimationFrame(() => shop.classList.add("show")); }
+    mode = "shop"; $("back").focus({ preventScroll: true });
+  }
+  function closeShop() {
+    if (shop.hidden) return;
+    shop.classList.remove("show"); setTimeout(() => { shop.hidden = true; }, reduce ? 0 : 420);
+    const q = sCur + wrapDiff(current.s - 2.6, sCur); sCur = sT = q; look = lookT = 0; hov = 0;
+    walkPose(q, 0, tmp); mode = "return";
+    tweenTo(tmp, 1.0, () => { mode = "walk"; document.querySelectorAll(".hud").forEach(h => h.classList.remove("away")); canvas.focus({ preventScroll: true }); });
+  }
+  $("back").addEventListener("click", closeShop); $("logoBack").addEventListener("click", closeShop); $("viewWall").addEventListener("click", closeShop);
+
+  // ---------- loop ----------
+  walkPose(sCur, 0, cam);
+  let last = performance.now();
+  function frame(now) {
+    requestAnimationFrame(frame);
+    const dt = Math.min(.05, (now - last) / 1000 || 0); last = now;
+    if (document.hidden || mode === "shop") return;
+    if (mode === "walk") {
+      const moving = Math.abs(sT - sCur) > .05;
+      sCur += (sT - sCur) * Math.min(1, dt * 3.2);
+      if (moving && !drag) lookT *= Math.pow(.3, dt);
+      look += (lookT + hov - look) * Math.min(1, dt * 5);
+      walkPose(sCur, look, cam);
+    } else if (tw) {
+      tw.t = Math.min(1, tw.t + dt / tw.dur); const e = ease(tw.t);
+      cam.position.lerpVectors(tw.p0, tw.p1, e); cam.quaternion.copy(tw.q0).slerp(tw.q1, e);
+      if (tw.t >= 1) { const fn = tw.done; tw = null; if (fn) fn(); }
+    }
+    renderer.render(scene, cam);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body></html>

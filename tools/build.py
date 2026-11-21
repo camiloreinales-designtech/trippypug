@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate index.html (3D gallery) and simple.html from paintings.json. Run: python3 tools/build.py"""
+"""Regenerate index.html (3D gallery), vortex.html (looping corridor) and simple.html from paintings.json. Run: python3 tools/build.py"""
 import html, json, os, urllib.parse
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MAIL = "trippypuginfo@gmail.com"
@@ -42,4 +42,8 @@ docs = [dict(id=p["id"], assetId="", url=f'images/full/{p["id"]}.jpg' + ver(f'im
 stub = ("<script>window.claude={use:async n=>n==='db'?{collection:()=>({orderBy:()=>({onSnapshot:cb=>setTimeout(()=>cb({docs:"
         + json.dumps(docs, ensure_ascii=False).replace("</", "<\\/") + ".map(d=>({id:d.id,data:()=>d}))}),0)})})}:null};</script>")
 open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8").write(rd("tools/gallery.template.html").replace("<!--PAINTINGS_STUB-->", stub))
+vdata = [dict(id=p["id"], title=p["title"], year=str(p["year"]), medium=p["medium"], dimensions=p["dimensions"], price=p.get("price", ""), sold=bool(p.get("sold")),
+              w=p["w"], h=p["h"], alt=p.get("alt", ""), thumb=f'images/{p["id"]}.jpg' + ver(f'images/{p["id"]}.jpg'), full=f'images/full/{p["id"]}.jpg' + ver(f'images/full/{p["id"]}.jpg'))
+         for p in P]
+open(os.path.join(ROOT, "vortex.html"), "w", encoding="utf-8").write(rd("tools/vortex.template.html").replace("__DATA__", json.dumps(vdata, ensure_ascii=False).replace("</", "<\\/")))
 print(f"built {len(P)} paintings")
