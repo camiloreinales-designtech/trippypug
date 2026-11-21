@@ -19,7 +19,9 @@ def figure(n, p, pos=None):
     mail = f'mailto:{MAIL}?subject={q("I want to buy: " + p["title"])}&amp;body={q(body)}'
     price = f'<span class="d">{"SOLD" if p.get("sold") else html.escape(p["price"], quote=True)}</span>' if p.get("price") or p.get("sold") else ""
     dot = '<i class="dot" aria-hidden="true"></i>' if p.get("sold") else ""
-    buy = "" if p.get("sold") else f'<a class="buy" href="{mail}" aria-label="I want to buy {html.escape(p["title"], quote=True)}">i want<br>to buy<br>it</a>'
+    buy = "" if p.get("sold") else (f'<details class="buyw"><summary class="buy" aria-label="I want to buy {html.escape(p["title"], quote=True)}">i want<br>to buy<br>it</summary>'
+           f'<div class="opts"><a href="{mail}">send an email</a>'
+           f'<a class="ig" href="https://ig.me/m/trippypug" target="_blank" rel="noopener" data-msg="{html.escape(body, quote=True)}">message @trippypug on instagram</a></div></details>')
     lazy = "" if (n if pos is None else pos) < 2 else ' loading="lazy"'
     t = html.escape(p["title"], quote=False)
     return f'''<figure id="p{n + 1}">

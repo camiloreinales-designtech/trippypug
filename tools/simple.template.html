@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Trippy Pug – Paintings by trippypug | Art Gallery</title><link rel="canonical" href="https://gallery.trippypug.com/simple.html"><meta property="og:type" content="website"><meta property="og:site_name" content="Trippy Pug"><meta property="og:url" content="https://gallery.trippypug.com/simple.html"><meta name="twitter:card" content="summary_large_image"><meta property="og:image" content="https://gallery.trippypug.com/images/full/p28.jpg"><meta property="og:description" content="Trippy Pug (@trippypug): original acrylic-on-canvas paintings of skeletons, flowers and everyday life. Walk the 3D gallery or browse the list."><meta property="og:title" content="Trippy Pug – Paintings by trippypug | Art Gallery">
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Trippy Pug (@trippypug): original acrylic-on-canvas paintings of skeletons, flowers and everyday life. Walk the 3D gallery or browse the list.">
@@ -40,6 +41,15 @@ figcaption { display: flex; justify-content: space-between; align-items: flex-st
 .lab .a { font-size: 22px; line-height: 1.25; } .lab .t { margin-top: 8px; } .lab .t b { font-weight: 700; } .lab .d { color: var(--dim); }
 .buy { flex: none; width: 82px; height: 82px; border: 2px solid var(--line); border-radius: 50%; display: grid; place-items: center; text-align: center; color: #5e5e5e; font: 700 12px/1.25 "Helvetica Neue", Helvetica, Arial, sans-serif; text-decoration: none; }
 .buy:hover { background: #f0f0ee; border-color: #555; }
+.buyw { position: relative; flex: none; }
+summary.buy { list-style: none; cursor: pointer; user-select: none; }
+summary.buy::-webkit-details-marker { display: none; }
+.buyw[open] summary.buy { background: #f0f0ee; border-color: var(--ink); color: var(--ink); }
+.opts { position: absolute; right: 0; top: calc(100% + 8px); z-index: 3; display: flex; flex-direction: column; min-width: 200px; background: var(--bg); border: 2px solid var(--line); border-radius: 14px; padding: 4px; box-shadow: 0 10px 24px -12px rgba(0,0,0,.35); }
+.opts a { display: block; padding: 11px 12px; border-radius: 10px; font: 700 13px/1.25 "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--ink); text-decoration: none; }
+.opts a:hover, .opts a:focus-visible { background: #f0f0ee; }
+.opts a + a { border-top: 1px solid #e3e3e0; border-radius: 0 0 10px 10px; }
+.copied { position: fixed; left: 50%; bottom: max(20px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 9; margin: 0; background: var(--ink); color: var(--bg); font: 700 13px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif; padding: 11px 16px; border-radius: 999px; width: max-content; max-width: calc(100vw - 32px); text-align: center; }
 footer { border-top: 1px solid #e3e3e0; padding-block: 28px 44px; font-size: 14px; color: var(--dim); }
 footer b { color: var(--ink); user-select: all; }
 @media (max-width: 640px) { .intro { grid-template-columns: 1fr; } .grid { gap: 48px; } }
@@ -57,5 +67,20 @@ footer b { color: var(--ink); user-select: all; }
 <!--FIGURES-->
 </div></section>
 </main>
-<footer>To buy a painting, press its circle or email <b>trippypuginfo@gmail.com</b>. If your email app does not open, copy the address and write the painting's title in your message.</footer>
+<footer>To buy a painting, press its circle and choose email or Instagram. You can also email <b>trippypuginfo@gmail.com</b> or message <b>@trippypug</b> on Instagram with the painting's title.</footer>
 </div>
+<p class="copied" id="copied" role="status" hidden>Message copied. Paste it in the Instagram chat.</p>
+<script>
+(() => {
+  const note = document.getElementById("copied"); let t = 0;
+  const closeAll = keep => document.querySelectorAll("details.buyw[open]").forEach(d => { if (d !== keep) d.open = false; });
+  document.addEventListener("click", e => {
+    closeAll(e.target.closest("details.buyw"));
+    const a = e.target.closest("a.ig");
+    if (a && navigator.clipboard) navigator.clipboard.writeText(a.dataset.msg).then(() => {
+      note.hidden = false; clearTimeout(t); t = setTimeout(() => { note.hidden = true; }, 5000);
+    }).catch(() => {});
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(null); });
+})();
+</script>
