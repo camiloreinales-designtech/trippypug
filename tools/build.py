@@ -3,10 +3,16 @@
 import html, json, os, urllib.parse
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MAIL = "trippypuginfo@gmail.com"
-GA_ID = ""   # Google Analytics 4 measurement ID, e.g. "G-ABC123XYZ". Empty = no tracking script is loaded.
-ANALYTICS = ('<script>window.tpTrack=function(n,p){try{if(window.gtag)gtag("event",n,p||{})}catch(e){}};</script>'
-             + (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>'
-                f'<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag("js",new Date());gtag("config","{GA_ID}");</script>' if GA_ID else ""))
+GOOGLE_TAG = "GTM-TWCG6DS8"   # Google tag from Google Analytics (GTM-... or G-...). Empty = no tracking script is loaded.
+_tag = ""
+if GOOGLE_TAG.startswith("GTM-"):   # the snippet Google Analytics gave for this site
+    _tag = (f'<script async src="https://www.googletagmanager.com/gtm.js?id={GOOGLE_TAG}"></script>'
+            '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());</script>')
+elif GOOGLE_TAG:
+    _tag = (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GOOGLE_TAG}"></script>'
+            f'<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag("js",new Date());gtag("config","{GOOGLE_TAG}");</script>')
+# _tag first (as Google asks), then a tiny helper the pages use for painting_view / buy_open / buy_click events
+ANALYTICS = _tag + '<script>window.tpTrack=function(n,p){try{if(window.gtag)gtag("event",n,p||{})}catch(e){}};</script>'
 P = json.load(open(os.path.join(ROOT, "paintings.json"), encoding="utf-8"))
 rd = lambda f: open(os.path.join(ROOT, f), encoding="utf-8").read()
 
