@@ -4,6 +4,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Trippy Pug (@trippypug): original acrylic-on-canvas paintings of skeletons, flowers and everyday life. Walk the 3D gallery or browse the list.">
 <!--JSONLD-->
+<!--ANALYTICS-->
 <style>
 :root { --bg: #fff; --ink: #151515; --dim: #666; --line: #8c8c8c; color-scheme: light; }
 * { box-sizing: border-box; }
@@ -76,11 +77,16 @@ footer b { color: var(--ink); user-select: all; }
   const closeAll = keep => document.querySelectorAll("details.buyw[open]").forEach(d => { if (d !== keep) d.open = false; });
   document.addEventListener("click", e => {
     closeAll(e.target.closest("details.buyw"));
+    const fig = e.target.closest("figure"), title = fig ? fig.dataset.title : "";
+    const opt = e.target.closest(".opts a");
+    if (opt) tpTrack("buy_click", { painting: title, method: opt.classList.contains("ig") ? "instagram" : "email", gallery: "list" });
+    else if (e.target.closest("figure > a")) tpTrack("painting_view", { painting: title, gallery: "list" });
     const a = e.target.closest("a.ig");
     if (a && navigator.clipboard) navigator.clipboard.writeText(a.dataset.msg).then(() => {
       note.hidden = false; clearTimeout(t); t = setTimeout(() => { note.hidden = true; }, 5000);
     }).catch(() => {});
   });
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(null); });
+  document.addEventListener("toggle", e => { const d = e.target; if (d.matches && d.matches("details.buyw") && d.open) tpTrack("buy_open", { painting: d.dataset.title, gallery: "list" }); }, true);
 })();
 </script>

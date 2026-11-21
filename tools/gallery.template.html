@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="description" content="Trippy Pug (@trippypug): original acrylic-on-canvas paintings of skeletons, flowers and everyday life. Walk the 3D gallery or browse the list."><title>Trippy Pug – Paintings by trippypug | Art Gallery</title><link rel="canonical" href="https://gallery.trippypug.com/"><meta property="og:type" content="website"><meta property="og:site_name" content="Trippy Pug"><meta property="og:url" content="https://gallery.trippypug.com/"><meta name="twitter:card" content="summary_large_image"><meta property="og:image" content="https://gallery.trippypug.com/images/full/p28.jpg"><meta property="og:description" content="Trippy Pug (@trippypug): original acrylic-on-canvas paintings of skeletons, flowers and everyday life. Walk the 3D gallery or browse the list."><meta property="og:title" content="Trippy Pug – Paintings by trippypug | Art Gallery"></head><body style="margin:0">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="description" content="Trippy Pug (@trippypug): original acrylic-on-canvas paintings of skeletons, flowers and everyday life. Walk the 3D gallery or browse the list."><title>Trippy Pug – Paintings by trippypug | Art Gallery</title><link rel="canonical" href="https://gallery.trippypug.com/"><meta property="og:type" content="website"><meta property="og:site_name" content="Trippy Pug"><meta property="og:url" content="https://gallery.trippypug.com/"><meta name="twitter:card" content="summary_large_image"><meta property="og:image" content="https://gallery.trippypug.com/images/full/p28.jpg"><meta property="og:description" content="Trippy Pug (@trippypug): original acrylic-on-canvas paintings of skeletons, flowers and everyday life. Walk the 3D gallery or browse the list."><meta property="og:title" content="Trippy Pug – Paintings by trippypug | Art Gallery"><!--ANALYTICS--></head><body style="margin:0">
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 :root {
@@ -584,25 +584,27 @@ html, body { height: 100%; }
   }
   /* ---- "i want to buy it" ---- */
   const MAIL = "trippypuginfo@gmail.com";
-  let buyMsg = "";
+  let buyMsg = "", buyName = "";
   function openBuy(id) {
     const p = items.find(i => i.id === id); if (!p) return;
     const bits = [p.year, p.medium, p.dimensions].filter(Boolean).join(", ");
     buyMsg = `Hi! I'm interested in "${p.title || "Untitled"}"${bits ? " (" + bits + ")" : ""}. Is it available?`;
+    buyName = p.title || "Untitled"; tpTrack("buy_open", { painting: buyName, gallery: "main" });
     $("buyTitle").textContent = p.title || "Untitled";
     $("buyInfo").textContent = [p.artist, p.year, p.medium, p.dimensions, p.price].filter(Boolean).join(" · ");
     $("buyText").textContent = buyMsg; $("buyCopy").textContent = "copy address + message";
     $("buyMail").href = "mailto:" + MAIL + "?subject=" + encodeURIComponent("I want to buy: " + (p.title || "Untitled")) + "&body=" + encodeURIComponent(buyMsg);
     $("buy").hidden = false; $("buyClose").focus();
   }
-  $("buyIG").addEventListener("click", () => { try { navigator.clipboard.writeText(buyMsg).then(() => { $("buyText").textContent = buyMsg + "  (copied, paste it in the chat)"; }, () => {}); } catch (e) {} });
+  $("buyMail").addEventListener("click", () => tpTrack("buy_click", { painting: buyName, method: "email", gallery: "main" }));
+  $("buyIG").addEventListener("click", () => { tpTrack("buy_click", { painting: buyName, method: "instagram", gallery: "main" }); try { navigator.clipboard.writeText(buyMsg).then(() => { $("buyText").textContent = buyMsg + "  (copied, paste it in the chat)"; }, () => {}); } catch (e) {} });
   $("buyClose").addEventListener("click", () => { $("buy").hidden = true; });
   $("buy").addEventListener("click", e => { if (e.target === $("buy")) $("buy").hidden = true; });
   $("buyCopy").addEventListener("click", async () => {
     try { await navigator.clipboard.writeText(MAIL + "\n\n" + buyMsg); $("buyCopy").textContent = "copied"; }
     catch (e) { const r = document.createRange(); r.selectNodeContents($("buyText")); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); $("buyCopy").textContent = "select + copy"; }
   });
-  function focusItem(id) { state.focus = id; flyTo(id); $("editBtn").hidden = !canEdit; }
+  function focusItem(id) { const fp = items.find(i => i.id === id); if (fp) tpTrack("painting_view", { painting: fp.title, gallery: "main" }); state.focus = id; flyTo(id); $("editBtn").hidden = !canEdit; }
   $("editBtn").addEventListener("click", () => { if (state.focus) openPanel(state.focus, false); });
   function openPanel(id, fly) {
     const p = items.find(i => i.id === id); if (!p) return;
