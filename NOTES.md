@@ -22,8 +22,3 @@
 
 ## Room size
 One room only. Each wall has k = ceil(paintings / 4) slots (3.4 m each + margins, min 13 m, room stays square). Paintings are split evenly over the 4 walls in tour order (left, back, right, front) and centred on the slot grid. Adding a painting fills an empty slot; the room only grows when every slot is full. Logic: `layoutRoom()` in tools/gallery.template.html.
-
-## NFC tags on the physical paintings
-- `tools/build.py` also writes one small page per painting at `p/<number>/index.html`, i.e. `https://gallery.trippypug.com/p/26/`. These addresses are permanent: they are written onto NFC stickers, so never rename or reuse a painting id.
-- `tools/nfc-tags.csv` lists every painting with the exact URL to write on its tag.
-- To write a tag: NFC Tools app (iOS/Android) → Write → Add a record → URL → paste the URL → Write, hold the phone on the sticker. Test by tapping, then (optional) Other → Lock tag so nobody can overwrite it. Locking is permanent.
