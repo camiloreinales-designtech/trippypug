@@ -68,7 +68,10 @@ button { font: inherit; color: inherit; }
 .facts div { display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--line); }
 .facts dt { font: 700 10px/1.4 var(--ui); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
 .facts dd { margin: 0; font: 700 14px/1.4 var(--ui); text-align: right; min-width: 0; overflow-wrap: anywhere; }
-a.add { display: flex; align-items: center; justify-content: center; text-decoration: none; }
+a.add { display: flex; align-items: center; justify-content: center; text-decoration: none; padding-inline: 12px; text-align: center; }
+.buyrow { display: flex; flex-direction: column; gap: 10px; }
+a.add.alt { background: var(--card); color: var(--ink); border: 1px solid var(--ink); }
+.note { margin: 0; font: 400 12px/1.4 var(--ui); color: var(--muted); }
 .add { flex: 1; min-height: 50px; background: var(--ink); color: var(--card); border: 0; font: 700 12px/1 var(--ui); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; }
 .more { margin-top: 80px; display: flex; flex-direction: column; gap: 20px; }
 .more h2 { font: 700 clamp(24px, 2.8vw, 32px)/1 var(--display); text-transform: uppercase; margin: 0; }
@@ -115,7 +118,7 @@ a.add { display: flex; align-items: center; justify-content: center; text-decora
         </div>
         <p class="price" id="pstatus"></p>
         <dl class="facts"><div><dt>Medium</dt><dd id="dMed"></dd></div><div><dt>Size</dt><dd id="dSize"></dd></div><div><dt>Year</dt><dd id="dYear"></dd></div></dl>
-        <a class="add" id="pbuy" href="#">i want to buy it</a>
+        <div class="buyrow" id="pbuy"><div class="eyebrow">i want to buy it</div><a class="add" id="pmail" href="#">send an email</a><a class="add alt" id="pig" href="https://ig.me/m/trippypug" target="_blank" rel="noopener">message @trippypug on instagram</a><p class="note" id="pnote" hidden>Message copied. Paste it in the Instagram chat.</p></div>
       </div>
     </div>
     <section class="more"><h2 id="moreT"></h2><div class="mrow" id="more"></div></section>
@@ -374,6 +377,10 @@ a.add { display: flex; align-items: center; justify-content: center; text-decora
   // ---------- painting view ----------
   const shop = $("shop"), pimg = $("pimg");
   const MAIL = "trippypuginfo@gmail.com";
+  let buyMsg = "";
+  $("pig").addEventListener("click", () => {   // Instagram can't be pre-filled: copy the message so it can be pasted in the chat
+    try { navigator.clipboard.writeText(buyMsg).then(() => { $("pnote").hidden = false; }, () => {}); } catch (e) {}
+  });
   function renderMore(it) {
     let list = it.g.arts.filter(x => x !== it);
     if (list.length < 3) list = list.concat(items.filter(x => x !== it && !list.includes(x)).slice(0, 6 - list.length));
@@ -396,11 +403,9 @@ a.add { display: flex; align-items: center; justify-content: center; text-decora
     $("pfull").href = p.full;
     $("dMed").textContent = p.medium; $("dSize").textContent = p.dimensions; $("dYear").textContent = p.year;
     const st = $("pstatus"); st.textContent = p.sold ? "Sold" : (p.price || "Available"); st.classList.toggle("sold", !!p.sold);
-    const buy = $("pbuy"); buy.hidden = !!p.sold;
-    if (!p.sold) {
-      const detail = p.year + ", " + p.medium + ", " + p.dimensions;
-      buy.href = "mailto:" + MAIL + "?subject=" + encodeURIComponent("I want to buy: " + p.title) + "&body=" + encodeURIComponent("Hi! I'm interested in \"" + p.title + "\" (" + detail + "). Is it available?");
-    }
+    $("pbuy").hidden = !!p.sold; $("pnote").hidden = true;
+    buyMsg = "Hi! I'm interested in \"" + p.title + "\" (" + p.year + ", " + p.medium + ", " + p.dimensions + "). Is it available?";
+    $("pmail").href = "mailto:" + MAIL + "?subject=" + encodeURIComponent("I want to buy: " + p.title) + "&body=" + encodeURIComponent(buyMsg);
     renderMore(it);
   }
   function openShop(it, animate) {
