@@ -3,7 +3,7 @@
 import html, json, os, urllib.parse
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MAIL = "trippypuginfo@gmail.com"
-GOOGLE_TAG = "GTM-TWCG6DS8"   # Google tag from Google Analytics (GTM-... or G-...). Empty = no tracking script is loaded.
+GOOGLE_TAG = "G-7R9YHKKMNT"   # Google tag from Google Analytics (GTM-... or G-...). Empty = no tracking script is loaded.
 _tag = ""
 if GOOGLE_TAG.startswith("GTM-"):   # the snippet Google Analytics gave for this site
     _tag = (f'<script async src="https://www.googletagmanager.com/gtm.js?id={GOOGLE_TAG}"></script>'
