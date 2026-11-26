@@ -3,6 +3,7 @@
 import html, json, os, urllib.parse
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MAIL = "trippypuginfo@gmail.com"
+SALE = True   # 8-bit dancing skeleton turkey "50% OFF ALL PAINTINGS" intro (sale.js). Set False and rebuild to remove it.
 GOOGLE_TAG = "G-7R9YHKKMNT"   # Google tag from Google Analytics (GTM-... or G-...). Empty = no tracking script is loaded.
 _tag = ""
 if GOOGLE_TAG.startswith("GTM-"):   # the snippet Google Analytics gave for this site
@@ -20,6 +21,8 @@ import hashlib
 def ver(path):
     try: return "?v=" + hashlib.md5(open(os.path.join(ROOT, path), "rb").read()).hexdigest()[:8]
     except Exception: return ""
+
+HEAD_EXTRA = lambda: ANALYTICS + (f'<script src="sale.js{ver("sale.js")}" defer></script>' if SALE else "")
 
 def figure(n, p, pos=None):
     num = p["id"][1:]
@@ -45,7 +48,7 @@ def figure(n, p, pos=None):
 import json as _j
 _ld = {"@context":"https://schema.org","@graph":[{"@type":"Person","name":"Trippy Pug","alternateName":"trippypug","url":"https://gallery.trippypug.com/","sameAs":["https://www.instagram.com/trippypug/"]}]+[{"@type":"VisualArtwork","name":p["title"],"creator":{"@type":"Person","name":"Trippy Pug"},"dateCreated":str(p["year"]),"artMedium":p["medium"],"width":p["dimensions"],"image":"https://gallery.trippypug.com/images/full/"+p["id"]+".jpg"} for p in P]}
 simple = rd("tools/simple.template.html").replace("<!--JSONLD-->", '<script type="application/ld+json">'+_j.dumps(_ld,ensure_ascii=False)+'</script>')
-simple = simple.replace("<!--ANALYTICS-->", ANALYTICS).replace("<!--FIGURES-->", "\n".join(figure(n, p, i) for i, (n, p) in enumerate(reversed(list(enumerate(P))))))
+simple = simple.replace("<!--ANALYTICS-->", HEAD_EXTRA()).replace("<!--FIGURES-->", "\n".join(figure(n, p, i) for i, (n, p) in enumerate(reversed(list(enumerate(P))))))
 open(os.path.join(ROOT, "simple.html"), "w", encoding="utf-8").write(simple)
 
 docs = [dict(id=p["id"], assetId="", url=f'images/full/{p["id"]}.jpg' + ver(f'images/full/{p["id"]}.jpg'), w=p["w"], h=p["h"], ts=n + 1, artist="trippypug",
@@ -53,9 +56,9 @@ docs = [dict(id=p["id"], assetId="", url=f'images/full/{p["id"]}.jpg' + ver(f'im
         for n, p in enumerate(P)]
 stub = ("<script>window.claude={use:async n=>n==='db'?{collection:()=>({orderBy:()=>({onSnapshot:cb=>setTimeout(()=>cb({docs:"
         + json.dumps(docs, ensure_ascii=False).replace("</", "<\\/") + ".map(d=>({id:d.id,data:()=>d}))}),0)})})}:null};</script>")
-open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8").write(rd("tools/gallery.template.html").replace("<!--PAINTINGS_STUB-->", stub).replace("<!--ANALYTICS-->", ANALYTICS))
+open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8").write(rd("tools/gallery.template.html").replace("<!--PAINTINGS_STUB-->", stub).replace("<!--ANALYTICS-->", HEAD_EXTRA()))
 vdata = [dict(id=p["id"], title=p["title"], year=str(p["year"]), medium=p["medium"], dimensions=p["dimensions"], price=p.get("price", ""), sold=bool(p.get("sold")),
               w=p["w"], h=p["h"], alt=p.get("alt", ""), thumb=f'images/{p["id"]}.jpg' + ver(f'images/{p["id"]}.jpg'), full=f'images/full/{p["id"]}.jpg' + ver(f'images/full/{p["id"]}.jpg'))
          for p in P]
-open(os.path.join(ROOT, "vortex.html"), "w", encoding="utf-8").write(rd("tools/vortex.template.html").replace("<!--ANALYTICS-->", ANALYTICS).replace("__DATA__", json.dumps(vdata, ensure_ascii=False).replace("</", "<\\/")))
+open(os.path.join(ROOT, "vortex.html"), "w", encoding="utf-8").write(rd("tools/vortex.template.html").replace("<!--ANALYTICS-->", HEAD_EXTRA()).replace("__DATA__", json.dumps(vdata, ensure_ascii=False).replace("</", "<\\/")))
 print(f"built {len(P)} paintings")
