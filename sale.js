@@ -1,9 +1,15 @@
-/* Sale intro: an 8-bit skeleton turkey dancing over "50% OFF ALL PAINTINGS".
-   Shown once per visit (closes on tap, click, any key, or after a few seconds).
-   Turn it on or off with SALE in tools/build.py, then rebuild. */
+/* 50% OFF sale, Thanksgiving to Cyber Monday (Thu Nov 26 - Mon Nov 30, 2026).
+   - Intro: an 8-bit skeleton turkey dancing over the sale text, once per visit
+     (closes on tap, click, any key, or after a few seconds).
+   - A "50% OFF" sign on every "i want to buy it" spot: main gallery, vortex and painting list.
+   Everything switches off by itself after Cyber Monday (midnight, New York time).
+   Turn it off early with SALE in tools/build.py, then rebuild. */
 (() => {
+  const END = Date.UTC(2026, 11, 1, 5, 0, 0);   // Tue Dec 1, 2026 00:00 in New York = end of Cyber Monday
+  if (Date.now() >= END) return;
   const KEY = "tpSaleSeen";
-  try { if (sessionStorage.getItem(KEY)) return; sessionStorage.setItem(KEY, "1"); } catch (e) {}
+  let seen = false;
+  try { seen = !!sessionStorage.getItem(KEY); sessionStorage.setItem(KEY, "1"); } catch (e) {}
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const font = document.createElement("link");
@@ -24,13 +30,38 @@
 .tp-sale .x:focus-visible { outline: 2px solid #f7d046; outline-offset: 2px; }
 @keyframes tpSaleIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes tpSaleBlink { 50% { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .tp-sale, .tp-sale .go { animation: none; } }`;
+.tp-sale .dates { font-size: clamp(12px, 3.4vw, 20px); color: #f7d046; margin-top: 6px; }
+.tp-sale .when { font-size: clamp(8px, 2.2vw, 11px); color: #bdbdbd; }
+@media (prefers-reduced-motion: reduce) { .tp-sale, .tp-sale .go { animation: none; } }
+/* the "50% OFF" sign next to the buy buttons */
+.tp-off { display: inline-flex; flex-direction: column; align-items: flex-start; align-self: flex-start; gap: 6px; margin: 0 0 12px; padding: 10px 12px 9px;
+  background: #f7d046; color: #111; box-shadow: 3px 3px 0 #e2412f; font-family: "Press Start 2P", "Courier New", monospace; text-align: left; }
+.tp-off b { font-size: 15px; line-height: 1; font-weight: 400; }
+.tp-off span { font-size: 8px; line-height: 1.3; }
+.opts .tp-off { margin: 6px 6px 8px; }
+summary.buy { position: relative; }
+.tp-sticker { position: absolute; top: -8px; right: -12px; padding: 5px 5px 4px; background: #f7d046; color: #111; box-shadow: 2px 2px 0 #e2412f;
+  font: 9px/1 "Press Start 2P", "Courier New", monospace; transform: rotate(-8deg); pointer-events: none; }`;
   document.head.appendChild(style);
+
+  // ---- "50% OFF" signs where people buy ----
+  const sign = () => { const d = document.createElement("div"); d.className = "tp-off"; d.innerHTML = "<b>50% OFF</b><span>until Cyber Monday, Nov 30</span>"; return d; };
+  const card = document.querySelector("#buy .card");                    // main gallery: the "i want to buy it" popup
+  if (card) card.insertBefore(sign(), card.querySelector(".k") || card.firstChild);
+  const pbuy = document.getElementById("pbuy");                         // vortex: the buy section of a painting
+  if (pbuy) pbuy.insertBefore(sign(), pbuy.firstChild);
+  document.querySelectorAll("details.buyw").forEach(d => {               // painting list: a sticker on each buy circle and a sign in its menu
+    const st = document.createElement("span"); st.className = "tp-sticker"; st.textContent = "50%"; st.setAttribute("aria-hidden", "true");
+    d.querySelector("summary").appendChild(st);
+    const opts = d.querySelector(".opts"); if (opts) opts.insertBefore(sign(), opts.firstChild);
+  });
+
+  if (seen) return;                                                     // the intro below shows once per visit
 
   const ov = document.createElement("div");
   ov.className = "tp-sale"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-modal", "true"); ov.setAttribute("aria-label", "50% off all paintings");
   ov.innerHTML = '<button class="x" type="button" aria-label="Close">×</button><canvas width="320" height="320" aria-hidden="true"></canvas>'
-    + '<p class="big">50% OFF</p><p class="small">ALL PAINTINGS</p><p class="go">TAP TO ENTER</p>';
+    + '<p class="big">50% OFF</p><p class="small">ALL PAINTINGS</p><p class="dates">NOV 26 - NOV 30</p><p class="when">THANKSGIVING TO CYBER MONDAY</p><p class="go">TAP TO ENTER</p>';
   document.body.appendChild(ov);
 
   // ---- the turkey: drawn on a 32x32 pixel grid, scaled up without smoothing ----
