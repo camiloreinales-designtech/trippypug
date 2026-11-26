@@ -17,21 +17,23 @@
   document.head.appendChild(font);
   const style = document.createElement("style");
   style.textContent = `
-.tp-sale { position: fixed; inset: 0; z-index: 1000; background: #000; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+.tp-sale { --ol: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0 -2px 0 #000, 0 2px 0 #000, -2px 0 0 #000, 2px 0 0 #000;
+  position: fixed; inset: 0; z-index: 1000; background: transparent; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
   padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
   font-family: "Press Start 2P", "Courier New", monospace; text-align: center; cursor: pointer; animation: tpSaleIn .3s ease both; }
 .tp-sale.out { opacity: 0; transition: opacity .35s ease; }
 .tp-sale canvas { width: min(72vw, 50vh, 360px); height: auto; aspect-ratio: 1; image-rendering: pixelated; image-rendering: crisp-edges; }
 .tp-sale p { margin: 0; line-height: 1.3; }
-.tp-sale .big { font-size: clamp(30px, 9vw, 64px); color: #f7d046; text-shadow: 4px 4px 0 #e2412f; letter-spacing: .02em; }
-.tp-sale .small { font-size: clamp(14px, 4vw, 26px); color: #fff; }
-.tp-sale .go { font-size: clamp(9px, 2.4vw, 12px); color: #9a9a9a; margin-top: 10px; animation: tpSaleBlink 1s steps(1, end) infinite; }
-.tp-sale .x { position: absolute; top: max(12px, env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); width: 44px; height: 44px; border: 0; background: none; color: #fff; font: 20px/1 "Press Start 2P", monospace; cursor: pointer; }
+.tp-sale .big { font-size: clamp(30px, 9vw, 64px); color: #f7d046; letter-spacing: .02em;
+  text-shadow: -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000, 3px 3px 0 #000, 0 -3px 0 #000, 0 3px 0 #000, -3px 0 0 #000, 3px 0 0 #000, 7px 7px 0 #e2412f; }
+.tp-sale .small { font-size: clamp(14px, 4vw, 26px); color: #fff; text-shadow: var(--ol); }
+.tp-sale .go { font-size: clamp(9px, 2.4vw, 12px); color: #fff; text-shadow: var(--ol); margin-top: 10px; animation: tpSaleBlink 1s steps(1, end) infinite; }
+.tp-sale .x { position: absolute; top: max(12px, env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); width: 44px; height: 44px; border: 0; background: none; color: #fff; text-shadow: var(--ol); font: 20px/1 "Press Start 2P", monospace; cursor: pointer; }
 .tp-sale .x:focus-visible { outline: 2px solid #f7d046; outline-offset: 2px; }
 @keyframes tpSaleIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes tpSaleBlink { 50% { opacity: 0; } }
-.tp-sale .dates { font-size: clamp(12px, 3.4vw, 20px); color: #f7d046; margin-top: 6px; }
-.tp-sale .when { font-size: clamp(8px, 2.2vw, 11px); color: #bdbdbd; }
+.tp-sale .dates { font-size: clamp(12px, 3.4vw, 20px); color: #f7d046; text-shadow: var(--ol); margin-top: 6px; }
+.tp-sale .when { font-size: clamp(8px, 2.2vw, 11px); color: #fff; text-shadow: var(--ol); }
 @media (prefers-reduced-motion: reduce) { .tp-sale, .tp-sale .go { animation: none; } }
 /* the "50% OFF" sign next to the buy buttons */
 .tp-off { display: inline-flex; flex-direction: column; align-items: flex-start; align-self: flex-start; gap: 6px; margin: 0 0 12px; padding: 10px 12px 9px;
@@ -114,8 +116,14 @@ summary.buy { position: relative; }
     px(hx + 4, hyy, BEAK); px(hx + 4, hyy + 1, BEAK); px(hx + 5, hyy + 1, BEAK); px(hx + 6, hyy + 1, BEAK); px(hx + 4, hyy + 2, BEAK);
     px(hx + 4, hyy + 3, RED); px(hx + 4, hyy + 4, RED); px(hx + 3, hyy + 4, RED); px(hx + 4, hyy + 5, RED);
     px(hx + 3, hyy - 3, RED); px(hx + 4, hyy - 2, RED);
-    // floor
-    for (let x = 4; x < 28; x += 2) px(x, 31, "#3a3a3a");
+    // dark 1-pixel outline around the sprite, so the white bones show on the white gallery
+    const im = g.getImageData(0, 0, N, N), a = im.data, o = new Uint8ClampedArray(a);
+    const on = (x, y) => x >= 0 && y >= 0 && x < N && y < N && a[(y * N + x) * 4 + 3] > 0;
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+      const i = (y * N + x) * 4;
+      if (a[i + 3] === 0 && (on(x - 1, y) || on(x + 1, y) || on(x, y - 1) || on(x, y + 1))) { o[i] = o[i + 1] = o[i + 2] = 17; o[i + 3] = 255; }
+    }
+    g.putImageData(new ImageData(o, N, N), 0, 0);
   }
   const cv = ov.querySelector("canvas"), ctx = cv.getContext("2d"); ctx.imageSmoothingEnabled = false;
   let f = 0;
