@@ -91,9 +91,22 @@ a.add.alt { background: var(--card); color: var(--ink); border: 1px solid var(--
 .fly { position: fixed; z-index: 30; pointer-events: none; object-fit: cover; margin: 0; box-shadow: 0 22px 44px -26px rgba(20, 20, 19, .55); }
 .nogl { position: fixed; inset: 0; display: grid; place-items: center; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); text-align: center; font: 700 15px/1.5 var(--ui); }
 @media (prefers-reduced-motion: reduce) { .shop { transition: none; } }
-</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-7R9YHKKMNT"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","G-7R9YHKKMNT");</script><script>window.tpTrack=function(n,p){try{if(window.gtag)gtag("event",n,p||{})}catch(e){}};</script><script src="sale.js?v=cf5ef28f" defer></script></head><body>
+</style><script async src="https://www.googletagmanager.com/gtag/js?id=G-7R9YHKKMNT"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","G-7R9YHKKMNT");</script><script>window.tpTrack=function(n,p){try{if(window.gtag)gtag("event",n,p||{})}catch(e){}};</script><style>
+.blink { position: relative; display: block; }
+.blink .lid { position: absolute; left: 0; top: 0; width: 100% !important; height: 100% !important; max-width: none; opacity: 0; pointer-events: none; animation: 6s step-end infinite; }
+.blink .lid-third-half { animation-name: lidThirdHalf; } .blink .lid-third-closed { animation-name: lidThirdClosed; }
+.blink .lid-main-half { animation-name: lidMainHalf; } .blink .lid-main-closed { animation-name: lidMainClosed; }
+.blink .lid-wink-half { animation-name: lidWinkHalf; } .blink .lid-wink-closed { animation-name: lidWinkClosed; }
+@keyframes lidThirdHalf { 0% { opacity: 0 } 26.667% { opacity: 1 } 27.833% { opacity: 0 } 29% { opacity: 1 } 30.167% { opacity: 0 } }
+@keyframes lidThirdClosed { 0% { opacity: 0 } 27.833% { opacity: 1 } 29% { opacity: 0 } }
+@keyframes lidMainHalf { 0% { opacity: 0 } 50% { opacity: 1 } 51.167% { opacity: 0 } 53.5% { opacity: 1 } 54.667% { opacity: 0 } }
+@keyframes lidMainClosed { 0% { opacity: 0 } 51.167% { opacity: 1 } 53.5% { opacity: 0 } }
+@keyframes lidWinkHalf { 0% { opacity: 0 } 83.333% { opacity: 1 } 84.5% { opacity: 0 } 90.833% { opacity: 1 } 92% { opacity: 0 } }
+@keyframes lidWinkClosed { 0% { opacity: 0 } 84.5% { opacity: 1 } 90.833% { opacity: 0 } }
+@media (prefers-reduced-motion: reduce) { .blink .lid { animation: none; } }
+</style><script src="sale.js?v=cf5ef28f" defer></script></head><body>
 <canvas id="gl" tabindex="0" aria-label="Vortex gallery: a looping 3D corridor of paintings. Scroll or drag to walk, click a painting to open it. Arrow keys also walk."></canvas>
-<div class="hud tl"><a href="https://www.instagram.com/trippypug/" target="_blank" rel="noopener" aria-label="@trippypug on Instagram"><img src="images/logo.png" alt="Trippy Pug"></a></div>
+<div class="hud tl"><a href="https://www.instagram.com/trippypug/" target="_blank" rel="noopener" aria-label="@trippypug on Instagram"><span class="blink"><img src="images/logo.png" alt="Trippy Pug"><img class="lid lid-third-half" src="images/lid-third-half.png?v=20ecf030" alt="" aria-hidden="true"><img class="lid lid-third-closed" src="images/lid-third-closed.png?v=87c9002b" alt="" aria-hidden="true"><img class="lid lid-main-half" src="images/lid-main-half.png?v=a4ecdc54" alt="" aria-hidden="true"><img class="lid lid-main-closed" src="images/lid-main-closed.png?v=137d8890" alt="" aria-hidden="true"><img class="lid lid-wink-half" src="images/lid-wink-half.png?v=ccf68e12" alt="" aria-hidden="true"><img class="lid lid-wink-closed" src="images/lid-wink-closed.png?v=f14d474d" alt="" aria-hidden="true"></span></a></div>
 <div class="hud tr"><a href="https://www.instagram.com/trippypug/" target="_blank" rel="noopener" aria-label="@trippypug on Instagram"><img src="images/instagram.png" alt="@trippypug"></a></div>
 <div class="hud bl" id="hints"><span>scroll to walk</span><span>drag to look around</span><span>click a painting</span></div>
 <nav class="hud br links" aria-label="Other views"><a href="./">Main gallery</a><a href="simple.html">Painting list</a></nav>

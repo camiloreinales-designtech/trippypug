@@ -22,7 +22,25 @@ def ver(path):
     try: return "?v=" + hashlib.md5(open(os.path.join(ROOT, path), "rb").read()).hexdigest()[:8]
     except Exception: return ""
 
-HEAD_EXTRA = lambda: ANALYTICS + (f'<script src="sale.js{ver("sale.js")}" defer></script>' if SALE else "")
+# blinking / winking pug logo: eyelid overlays (made by tools/make_lids.py) switched on and off by CSS, on a 6 s loop:
+# third eye blinks at 1.6 s, both main eyes blink at 3.0 s, the right eye winks at 5.0 s
+LID_KEYS = ["third-half", "third-closed", "main-half", "main-closed", "wink-half", "wink-closed"]
+BLINK_CSS = """<style>
+.blink { position: relative; display: block; }
+.blink .lid { position: absolute; left: 0; top: 0; width: 100% !important; height: 100% !important; max-width: none; opacity: 0; pointer-events: none; animation: 6s step-end infinite; }
+.blink .lid-third-half { animation-name: lidThirdHalf; } .blink .lid-third-closed { animation-name: lidThirdClosed; }
+.blink .lid-main-half { animation-name: lidMainHalf; } .blink .lid-main-closed { animation-name: lidMainClosed; }
+.blink .lid-wink-half { animation-name: lidWinkHalf; } .blink .lid-wink-closed { animation-name: lidWinkClosed; }
+@keyframes lidThirdHalf { 0% { opacity: 0 } 26.667% { opacity: 1 } 27.833% { opacity: 0 } 29% { opacity: 1 } 30.167% { opacity: 0 } }
+@keyframes lidThirdClosed { 0% { opacity: 0 } 27.833% { opacity: 1 } 29% { opacity: 0 } }
+@keyframes lidMainHalf { 0% { opacity: 0 } 50% { opacity: 1 } 51.167% { opacity: 0 } 53.5% { opacity: 1 } 54.667% { opacity: 0 } }
+@keyframes lidMainClosed { 0% { opacity: 0 } 51.167% { opacity: 1 } 53.5% { opacity: 0 } }
+@keyframes lidWinkHalf { 0% { opacity: 0 } 83.333% { opacity: 1 } 84.5% { opacity: 0 } 90.833% { opacity: 1 } 92% { opacity: 0 } }
+@keyframes lidWinkClosed { 0% { opacity: 0 } 84.5% { opacity: 1 } 90.833% { opacity: 0 } }
+@media (prefers-reduced-motion: reduce) { .blink .lid { animation: none; } }
+</style>"""
+LIDS = lambda: "".join(f'<img class="lid lid-{k}" src="images/lid-{k}.png{ver("images/lid-" + k + ".png")}" alt="" aria-hidden="true">' for k in LID_KEYS)
+HEAD_EXTRA = lambda: ANALYTICS + BLINK_CSS + (f'<script src="sale.js{ver("sale.js")}" defer></script>' if SALE else "")
 
 def figure(n, p, pos=None):
     num = p["id"][1:]
@@ -48,7 +66,7 @@ def figure(n, p, pos=None):
 import json as _j
 _ld = {"@context":"https://schema.org","@graph":[{"@type":"Person","name":"Trippy Pug","alternateName":"trippypug","url":"https://gallery.trippypug.com/","sameAs":["https://www.instagram.com/trippypug/"]}]+[{"@type":"VisualArtwork","name":p["title"],"creator":{"@type":"Person","name":"Trippy Pug"},"dateCreated":str(p["year"]),"artMedium":p["medium"],"width":p["dimensions"],"image":"https://gallery.trippypug.com/images/full/"+p["id"]+".jpg"} for p in P]}
 simple = rd("tools/simple.template.html").replace("<!--JSONLD-->", '<script type="application/ld+json">'+_j.dumps(_ld,ensure_ascii=False)+'</script>')
-simple = simple.replace("<!--ANALYTICS-->", HEAD_EXTRA()).replace("<!--FIGURES-->", "\n".join(figure(n, p, i) for i, (n, p) in enumerate(reversed(list(enumerate(P))))))
+simple = simple.replace("<!--ANALYTICS-->", HEAD_EXTRA()).replace("<!--LIDS-->", LIDS()).replace("<!--FIGURES-->", "\n".join(figure(n, p, i) for i, (n, p) in enumerate(reversed(list(enumerate(P))))))
 open(os.path.join(ROOT, "simple.html"), "w", encoding="utf-8").write(simple)
 
 docs = [dict(id=p["id"], assetId="", url=f'images/full/{p["id"]}.jpg' + ver(f'images/full/{p["id"]}.jpg'), w=p["w"], h=p["h"], ts=n + 1, artist="trippypug",
@@ -56,9 +74,9 @@ docs = [dict(id=p["id"], assetId="", url=f'images/full/{p["id"]}.jpg' + ver(f'im
         for n, p in enumerate(P)]
 stub = ("<script>window.claude={use:async n=>n==='db'?{collection:()=>({orderBy:()=>({onSnapshot:cb=>setTimeout(()=>cb({docs:"
         + json.dumps(docs, ensure_ascii=False).replace("</", "<\\/") + ".map(d=>({id:d.id,data:()=>d}))}),0)})})}:null};</script>")
-open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8").write(rd("tools/gallery.template.html").replace("<!--PAINTINGS_STUB-->", stub).replace("<!--ANALYTICS-->", HEAD_EXTRA()))
+open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8").write(rd("tools/gallery.template.html").replace("<!--PAINTINGS_STUB-->", stub).replace("<!--ANALYTICS-->", HEAD_EXTRA()).replace("<!--LIDS-->", LIDS()))
 vdata = [dict(id=p["id"], title=p["title"], year=str(p["year"]), medium=p["medium"], dimensions=p["dimensions"], price=p.get("price", ""), sold=bool(p.get("sold")),
               w=p["w"], h=p["h"], alt=p.get("alt", ""), thumb=f'images/{p["id"]}.jpg' + ver(f'images/{p["id"]}.jpg'), full=f'images/full/{p["id"]}.jpg' + ver(f'images/full/{p["id"]}.jpg'))
          for p in P]
-open(os.path.join(ROOT, "vortex.html"), "w", encoding="utf-8").write(rd("tools/vortex.template.html").replace("<!--ANALYTICS-->", HEAD_EXTRA()).replace("__DATA__", json.dumps(vdata, ensure_ascii=False).replace("</", "<\\/")))
+open(os.path.join(ROOT, "vortex.html"), "w", encoding="utf-8").write(rd("tools/vortex.template.html").replace("<!--ANALYTICS-->", HEAD_EXTRA()).replace("<!--LIDS-->", LIDS()).replace("__DATA__", json.dumps(vdata, ensure_ascii=False).replace("</", "<\\/")))
 print(f"built {len(P)} paintings")
